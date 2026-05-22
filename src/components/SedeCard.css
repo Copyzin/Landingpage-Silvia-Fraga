@@ -1,0 +1,168 @@
+/* ===== Sede Card (Double-Bezel) ===== */
+.sede-card {
+  background: var(--color-text-primary);
+  padding: 8px;
+  border-radius: var(--radius-2xl);
+  display: block;
+  text-decoration: none;
+}
+
+.sede-card__inner {
+  background: var(--color-surface-soft);
+  border-radius: calc(var(--radius-2xl) - 8px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Image area = carousel container */
+.sede-card__image-wrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-surface-wash);
+}
+
+/* ===== Body ===== */
+.sede-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(20px, 2.6vw, 28px);
+}
+
+.sede-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  row-gap: 10px;
+}
+.sede-card__pin { color: var(--color-action-hover); flex-shrink: 0; }
+.sede-card__title {
+  font-family: var(--font-cinzel);
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+/* Chip de horário — discreto, premium, ao lado do título */
+.sede-card__hours {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(252, 209, 125, 0.16);
+  border: 1px solid rgba(228, 215, 172, 0.55);
+  font-family: var(--font-archivo);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  line-height: 1;
+}
+.sede-card__hours svg {
+  color: var(--color-action-hover);
+  flex-shrink: 0;
+}
+.sede-card__hours > span { white-space: nowrap; }
+
+@media (max-width: 480px) {
+  .sede-card__hours {
+    font-size: 10px;
+    padding: 5px 10px;
+    letter-spacing: 0.01em;
+  }
+}
+
+.sede-card__endereco {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--color-text-tertiary);
+  border-bottom: 1px dashed var(--color-border-subtle);
+  padding-bottom: 12px;
+  transition: color var(--duration-base) var(--ease-premium);
+  text-decoration: none;
+}
+.sede-card__endereco:hover { color: var(--color-action-hover); }
+
+/* ===== Map ===== */
+.sede-card__map {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface-wash);
+  border: 1px solid var(--color-border-subtle);
+}
+.sede-card__map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  filter: saturate(0.92) contrast(0.98);
+}
+
+/* Encobre o badge "Maps" injetado pelo Google embed no canto superior esquerdo.
+   Cor casa com o terreno do embed para parecer parte natural do mapa. */
+.sede-card__map-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 108px;
+  height: 32px;
+  background: #f5f3ee;
+  border-bottom-right-radius: var(--radius-md);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sede-card__map-open {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  box-shadow: var(--shadow-subtle);
+  transition:
+    background var(--duration-base) var(--ease-premium),
+    transform var(--duration-base) var(--ease-premium),
+    color var(--duration-base) var(--ease-premium);
+  z-index: 2;
+}
+.sede-card__map-open:hover {
+  background: var(--color-text-primary);
+  color: var(--color-text-inverse);
+  transform: scale(1.06);
+}
+
+/* ===== CTA centralizado no rodapé do card ===== */
+.sede-card__cta-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+  padding-top: 4px;
+}
+.sede-card__cta-wrap .shader-btn {
+  min-width: 200px;
+  justify-content: center;
+}
+.sede-card__cta-wrap .shader-btn__text {
+  align-items: center;
+  text-align: center;
+}

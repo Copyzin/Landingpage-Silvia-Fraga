@@ -1,0 +1,119 @@
+/* Equal lateral + bottom spacing tied to the site's container padding token
+   (20–32px depending on viewport) so the button sits in line with content. */
+.wa-floating {
+  position: fixed;
+  bottom: var(--container-padding);
+  right: var(--container-padding);
+  z-index: 55;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-text-primary);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  isolation: isolate;
+  transition:
+    transform 320ms var(--ease-premium),
+    color 320ms var(--ease-premium);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Subtle hover backdrop — icon stays "outline only" when idle */
+.wa-floating__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(93, 8, 9, 0);
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+  transition:
+    background 320ms var(--ease-premium),
+    border-color 320ms var(--ease-premium),
+    backdrop-filter 320ms var(--ease-premium);
+  z-index: -1;
+}
+
+/* Recolor the WhatsApp PNG to the brand vinho via mask-image:
+   the PNG silhouette becomes a colored shape, transparent areas stay transparent. */
+.wa-floating__icon {
+  position: relative;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  background-color: var(--color-text-primary);
+  -webkit-mask-image: url('/whatsapp-icon.png');
+          mask-image: url('/whatsapp-icon.png');
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  transition:
+    background-color 320ms var(--ease-premium),
+    transform 320ms var(--ease-premium);
+}
+
+/* Soft breathing pulse so the button is noticeable without being loud */
+.wa-floating::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1px solid rgba(93, 8, 9, 0.22);
+  pointer-events: none;
+  animation: wa-pulse 2800ms var(--ease-premium) infinite;
+  z-index: -2;
+}
+
+@keyframes wa-pulse {
+  0%   { transform: scale(1);    opacity: 0.6; }
+  60%  { transform: scale(1.2);  opacity: 0;   }
+  100% { transform: scale(1.2);  opacity: 0;   }
+}
+
+/* Hover state */
+.wa-floating:hover .wa-floating__ring {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(93, 8, 9, 0.22);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+.wa-floating:hover .wa-floating__icon {
+  background-color: var(--color-action-hover);
+  transform: scale(1.06);
+}
+.wa-floating:active .wa-floating__icon {
+  transform: scale(0.94);
+}
+
+.wa-floating:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 4px;
+}
+
+/* ===== Mobile: smaller, more discreet — same pattern ===== */
+@media (max-width: 768px) {
+  .wa-floating {
+    width: 46px;
+    height: 46px;
+  }
+  .wa-floating__icon {
+    width: 30px;
+    height: 30px;
+  }
+  .wa-floating::before { animation-duration: 3400ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-floating,
+  .wa-floating__icon,
+  .wa-floating__ring {
+    transition: none;
+  }
+  .wa-floating::before { animation: none; }
+}

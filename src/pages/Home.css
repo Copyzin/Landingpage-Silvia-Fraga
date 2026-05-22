@@ -1,0 +1,12 @@
+.home-root--enter {
+  animation: home-enter 420ms var(--ease-premium);
+}
+
+@keyframes home-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-root--enter { animation: none; }
+}

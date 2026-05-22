@@ -1,0 +1,340 @@
+/* ===== Fluid Island Nav ===== */
+.island-nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  z-index: 60;
+  width: min(calc(100% - 32px), 1120px);
+  pointer-events: none;
+  font-family: var(--font-archivo);
+  transform: translate(-50%, 0);
+  transition: transform 500ms var(--ease-premium), opacity 400ms var(--ease-premium);
+  will-change: transform;
+}
+.island-nav.is-hidden {
+  transform: translate(-50%, -160%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.island-nav__inner {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 8px 8px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(93, 8, 9, 0.1);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    var(--shadow-elevated);
+}
+
+/* === Brand === */
+.island-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  flex-shrink: 0;
+  min-width: 0;
+}
+.island-nav__logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.island-nav__wordmark {
+  font-family: var(--font-cinzel);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+}
+
+/* === Center links === */
+.island-nav__links {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+.island-nav__link {
+  position: relative;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition:
+    background var(--duration-base) var(--ease-premium),
+    color var(--duration-base) var(--ease-premium);
+}
+.island-nav__link:hover {
+  background: var(--color-surface-wash);
+  color: var(--color-action-hover);
+}
+
+/* === Right actions === */
+.island-nav__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.island-nav__action {
+  flex-shrink: 0;
+}
+.island-nav__action.is-icon-only { width: 38px !important; height: 38px !important; }
+
+/* === Hamburger === */
+.island-nav__hamburger {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: transparent;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(93, 8, 9, 0.12);
+  transition: background var(--duration-base) var(--ease-premium);
+}
+.island-nav__hamburger:hover { background: var(--color-surface-wash); }
+
+.hamburger-line {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 1.5px;
+  background: var(--color-text-primary);
+  border-radius: 2px;
+  transform-origin: center;
+  transition:
+    transform var(--duration-base) var(--ease-premium),
+    top var(--duration-base) var(--ease-premium);
+}
+.hamburger-line--top {
+  top: calc(50% - 4px);
+  transform: translateX(-50%);
+}
+.hamburger-line--bottom {
+  top: calc(50% + 4px);
+  transform: translateX(-50%);
+}
+.island-nav__hamburger.is-active .hamburger-line--top {
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.island-nav__hamburger.is-active .hamburger-line--bottom {
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* === Responsive === */
+@media (max-width: 1023px) {
+  .island-nav__links { display: none; }
+  .island-nav__hamburger { display: inline-flex; }
+  /* No mobile, WhatsApp + Instagram saem do pill e vão para a floating dock */
+  .island-nav__action--instagram,
+  .island-nav__action--whatsapp { display: none; }
+}
+
+@media (min-width: 1024px) {
+  .island-nav__links { display: inline-flex; }
+  .island-nav__hamburger { display: none; }
+}
+
+/* Em telas muito pequenas: encolhe pill mas preserva a wordmark */
+@media (max-width: 480px) {
+  .island-nav { width: calc(100% - 20px); top: 16px; }
+  .island-nav__inner { padding: 6px 6px 6px 12px; gap: 8px; }
+  .island-nav__logo { width: 28px; height: 28px; }
+  .island-nav__wordmark { font-size: 14px; }
+  .island-nav__action.is-icon-only { width: 34px !important; height: 34px !important; }
+}
+
+/* Em telas estreitíssimas (<360px), reduz mais um pouco — mas a wordmark fica */
+@media (max-width: 360px) {
+  .island-nav__wordmark { font-size: 13px; letter-spacing: 0.01em; }
+  .island-nav__inner { gap: 6px; padding-left: 10px; }
+}
+
+/* ===== Floating dock (mobile, visível quando a island-nav está escondida) =====
+   Layout: [mais opções] [WhatsApp] [Instagram] — alinhado no canto superior direito */
+.floating-dock {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 65;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(93, 8, 9, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    var(--shadow-elevated);
+  transform: translateX(140%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 600ms var(--ease-premium),
+    opacity 400ms var(--ease-premium);
+}
+.floating-dock.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.floating-dock__btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid rgba(228, 224, 180, 0.18);
+  color: var(--color-text-inverse);
+  background: var(--color-text-primary);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 6px 16px -6px rgba(93, 8, 9, 0.45);
+  transition:
+    background var(--duration-base) var(--ease-premium),
+    transform var(--duration-base) var(--ease-premium);
+}
+.floating-dock__btn:hover { transform: scale(1.05); }
+.floating-dock__btn:active { transform: scale(0.94); }
+
+.floating-dock__btn--menu:hover { background: var(--color-action-hover); }
+
+/* Desktop não usa esse dock */
+@media (min-width: 1024px) {
+  .floating-dock { display: none; }
+}
+
+/* ===== Mobile Menu (Overlay) ===== */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(80px, 10vh, 120px) clamp(24px, 6vw, 64px);
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity var(--duration-base) var(--ease-premium),
+    visibility 0s linear var(--duration-base);
+}
+.mobile-menu.is-open {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity var(--duration-base) var(--ease-premium),
+    visibility 0s linear 0s;
+}
+
+.mobile-menu__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(228, 224, 180, 0.08);
+  border: 1px solid rgba(228, 224, 180, 0.2);
+  color: var(--color-text-inverse);
+  display: grid;
+  place-items: center;
+  transition: background var(--duration-base) var(--ease-premium);
+}
+.mobile-menu__close:hover { background: rgba(228, 224, 180, 0.18); }
+
+.mobile-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: clamp(40px, 6vw, 56px);
+}
+
+.mobile-menu__link {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 10px 0;
+  font-family: var(--font-cinzel);
+  font-size: clamp(32px, 7vw, 52px);
+  font-weight: 500;
+  color: var(--color-text-inverse);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  border-bottom: 1px solid rgba(228, 224, 180, 0.1);
+  transition: color var(--duration-base) var(--ease-premium);
+  /* Reveal animation */
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(8px);
+}
+.mobile-menu.is-open .mobile-menu__link {
+  animation: revealLink 700ms var(--ease-premium) var(--reveal-delay, 100ms) forwards;
+}
+.mobile-menu__link:hover { color: var(--color-surface-muted); }
+.mobile-menu__link-index {
+  font-family: var(--font-archivo);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  opacity: 0.5;
+  color: var(--color-surface-muted);
+}
+
+.mobile-menu__actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(8px);
+}
+.mobile-menu.is-open .mobile-menu__actions {
+  animation: revealLink 700ms var(--ease-premium) var(--reveal-delay, 420ms) forwards;
+}
+
+/* Botões de contato em largura plena, com o ícone sempre colado à direita
+   — independente do tamanho do label */
+.mobile-menu__actions .shader-btn {
+  display: flex;
+  width: 100%;
+}
+.mobile-menu__actions .shader-btn__icon-wrap {
+  margin-left: auto;
+}
+
+@keyframes revealLink {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}

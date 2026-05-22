@@ -1,0 +1,141 @@
+@import './fonts.css';
+@import './tokens.css';
+@import './reset.css';
+
+body {
+  font-family: var(--font-archivo);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-text-tertiary);
+  background-color: var(--color-surface-soft);
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-cinzel);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.01em;
+}
+
+h4, h5, h6 {
+  font-family: var(--font-archivo);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ===== Utility: Container ===== */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* ===== Eyebrow Tag (premium pill) ===== */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-muted);
+  color: var(--color-text-primary);
+  font-family: var(--font-archivo);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.eyebrow--dark {
+  background: rgba(252, 209, 125, 0.15);
+  color: var(--color-text-inverse);
+  border: 1px solid rgba(228, 224, 180, 0.25);
+}
+.eyebrow--ghost {
+  background: transparent;
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+}
+
+/* ===== Section spacing ===== */
+.section {
+  padding-block: var(--section-padding-y);
+  position: relative;
+}
+
+/* ===== Ghost Button ===== */
+.ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-subtle);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: var(--font-archivo);
+  font-weight: var(--font-weight-semibold);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background var(--duration-base) var(--ease-premium),
+              transform var(--duration-base) var(--ease-premium),
+              border-color var(--duration-base) var(--ease-premium);
+}
+.ghost-btn:hover {
+  background: var(--color-surface-wash);
+  transform: translateY(-1px);
+  border-color: var(--color-text-primary);
+}
+.ghost-btn:active { transform: scale(0.98); }
+.ghost-btn--inverse {
+  border-color: rgba(228, 224, 180, 0.3);
+  color: var(--color-text-inverse);
+}
+.ghost-btn--inverse:hover {
+  background: rgba(228, 224, 180, 0.08);
+  border-color: var(--color-text-inverse);
+}
+
+/* ===== Reveal on scroll ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+  transition: opacity 800ms var(--ease-premium),
+              transform 800ms var(--ease-premium),
+              filter 800ms var(--ease-premium);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* ===== Grain Overlay (global texture) ===== */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px;
+}
+
+/* ===== Focus visible ===== */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ===== Hairline divider ===== */
+.hairline { height: 1px; background: var(--color-border-subtle); border: 0; }
+.hairline--gold { background: rgba(252, 209, 125, 0.2); }
+
+/* ===== Selection ===== */
+::selection { background: var(--color-text-primary); color: var(--color-surface-muted); }

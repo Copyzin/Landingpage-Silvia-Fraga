@@ -1,0 +1,177 @@
+.shader-btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px 10px 22px;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-primary);
+  color: var(--color-surface-raised);
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  overflow: hidden;
+  text-decoration: none;
+  will-change: transform;
+  transition:
+    transform var(--duration-base) var(--ease-premium),
+    box-shadow var(--duration-base) var(--ease-premium);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 1px 1px rgba(0, 0, 0, 0.08),
+    0 8px 24px -8px rgba(93, 8, 9, 0.35);
+}
+
+.shader-btn__shader {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none; /* garante que canvas WebGL nunca absorva clique */
+  /* Container do canvas WebGL */
+}
+.shader-btn__shader > * {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  pointer-events: none;
+}
+.shader-btn__shader canvas { pointer-events: none; }
+
+.shader-btn__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.shader-btn__text { pointer-events: none; }
+.shader-btn__icon-wrap { pointer-events: none; }
+
+.shader-btn__text {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+.shader-btn__label {
+  display: inline-block;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.shader-btn__sublabel {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  opacity: 0.78;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.shader-btn__icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition:
+    transform var(--duration-base) var(--ease-premium),
+    background var(--duration-base) var(--ease-premium);
+  backdrop-filter: blur(4px);
+  color: var(--color-surface-raised);
+}
+
+.shader-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 2px 2px rgba(0, 0, 0, 0.08),
+    0 14px 36px -8px rgba(93, 8, 9, 0.45);
+}
+.shader-btn:hover .shader-btn__icon-wrap {
+  transform: translate(2px, -2px) scale(1.05);
+  background: rgba(255, 255, 255, 0.22);
+}
+.shader-btn:active { transform: scale(0.98); }
+.shader-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+/* === Sizes === */
+.shader-btn--sm {
+  padding: 8px 8px 8px 18px;
+  font-size: 13px;
+}
+.shader-btn--sm .shader-btn__icon-wrap { width: 28px; height: 28px; }
+
+.shader-btn--lg {
+  padding: 14px 14px 14px 28px;
+  font-size: 15px;
+  gap: 16px;
+}
+.shader-btn--lg .shader-btn__icon-wrap { width: 40px; height: 40px; }
+.shader-btn--lg .shader-btn__sublabel { font-size: 12px; }
+
+.shader-btn--xl {
+  padding: 18px 18px 18px 32px;
+  font-size: 17px;
+  gap: 20px;
+  border-radius: var(--radius-pill);
+}
+.shader-btn--xl .shader-btn__icon-wrap { width: 48px; height: 48px; }
+
+/* === Icon Only === */
+.shader-btn.is-icon-only {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  gap: 0;
+}
+.shader-btn.is-icon-only .shader-btn__icon-wrap {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  backdrop-filter: none;
+}
+.shader-btn.is-icon-only:hover .shader-btn__icon-wrap {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* === Variants extra (override) === */
+.shader-btn--gold { color: var(--color-text-inverse); }
+.shader-btn--gold .shader-btn__label,
+.shader-btn--gold .shader-btn__sublabel { color: var(--color-text-inverse); }
+
+.shader-btn--dark { color: var(--color-text-inverse); }
+.shader-btn--dark .shader-btn__icon-wrap {
+  background: rgba(228, 224, 180, 0.12);
+  border-color: rgba(228, 224, 180, 0.22);
+  color: var(--color-text-inverse);
+}
+.shader-btn--dark:hover .shader-btn__icon-wrap {
+  background: rgba(228, 224, 180, 0.2);
+}
+
+/* === Reduce motion: kill shader animation === */
+@media (prefers-reduced-motion: reduce) {
+  .shader-btn__shader { opacity: 0; }
+  .shader-btn { background: linear-gradient(135deg, var(--color-text-primary), var(--color-action-hover)); }
+}
