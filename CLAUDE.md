@@ -95,7 +95,7 @@ Não é sticky tradicional. É uma pill flutuante (`position: fixed; top: 20px; 
 
 ### Contatos (`src/constants/contact.js`)
 
-Fonte única de verdade para WhatsApp/e-mail/endereços/Instagram. **Nunca hardcoded em componentes**. O `whatsappMessageWithContext(contexto)` injeta a especialidade na mensagem WA. Instagram tem placeholder `TODO_INSTAGRAM_HANDLE` — edição de uma linha quando o handle real for fornecido.
+Fonte única de verdade para WhatsApp/e-mail/endereços/Instagram. **Nunca hardcoded em componentes**. O `whatsappMessageWithContext(contexto)` injeta a especialidade na mensagem WA.
 
 Endereços de Campinas e São Paulo geram automaticamente URLs de embed iframe, search e directions (sem chave de API).
 

@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useRef } from 'react'
 import { MeshGradient } from '@paper-design/shaders-react'
 import { ArrowUpRight } from '@phosphor-icons/react'
 import './ShaderButton.css'
@@ -11,6 +11,22 @@ const PALETTES = {
   // pretos profundos (zona dark/contato)
   dark: ['#000000', '#210304', '#5d0809', '#3a0405'],
 }
+
+// Preset compartilhado entre todos os ShaderButtons.
+// Inspirado nos presets cinematic do shaders.com: distortion alta + swirl
+// moderado + speed lento → sensação de respiração orgânica. Seeds diferentes
+// por instância garantem que cada botão tenha um "instantâneo" único do mesmo
+// campo de gradiente.
+export const SHADER_PRESET = {
+  speed: 0.18,
+  distortion: 1.25,
+  swirl: 0.35,
+  offsetX: 0,
+  offsetY: 0,
+  scale: 1.3,
+}
+
+export const SHADER_PALETTES = PALETTES
 
 // Protocolos que precisam de fallback programático (lift de OS handler).
 // Em alguns navegadores, o click default no <a href="mailto:..."> falha em
@@ -31,9 +47,13 @@ function ShaderButtonImpl({
   onClick,
   className = '',
   external = undefined,
+  seed,
 }) {
   const Tag = as
   const palette = PALETTES[variant] || PALETTES.primary
+  // Seed estável por instância: gerado uma vez no mount, persiste entre re-renders.
+  // Aceita override via prop pra casos onde o consumidor quer controlar.
+  const seedRef = useRef(seed ?? Math.floor(Math.random() * 10000))
   const isExternal =
     external ?? (typeof href === 'string' && /^https?:/.test(href))
   const targetProps = isExternal
@@ -83,9 +103,13 @@ function ShaderButtonImpl({
       <span className="shader-btn__shader" aria-hidden="true">
         <MeshGradient
           colors={palette}
-          speed={0.35}
-          distortion={0.85}
-          swirl={0.6}
+          speed={SHADER_PRESET.speed}
+          distortion={SHADER_PRESET.distortion}
+          swirl={SHADER_PRESET.swirl}
+          offsetX={SHADER_PRESET.offsetX}
+          offsetY={SHADER_PRESET.offsetY}
+          scale={SHADER_PRESET.scale}
+          frame={seedRef.current}
           style={{ width: '100%', height: '100%' }}
         />
       </span>

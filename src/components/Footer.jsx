@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import {
   InstagramLogo,
+  LinkedinLogo,
   ArrowSquareOut,
   EnvelopeSimple,
   Phone,
@@ -101,6 +102,17 @@ function Footer() {
                 >
                   <InstagramLogo size={14} weight="light" />
                   <span>Instagram</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={CONTATO.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="site-footer__link-icon"
+                >
+                  <LinkedinLogo size={14} weight="light" />
+                  <span>LinkedIn</span>
                 </a>
               </li>
             </ul>

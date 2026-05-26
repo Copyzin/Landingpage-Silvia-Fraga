@@ -99,6 +99,30 @@
 }
 .contato__email-link:hover { text-decoration-color: var(--color-surface-muted); }
 
+.contato__linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(252, 209, 125, 0.28);
+  font-family: var(--font-archivo);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--color-surface-muted);
+  text-decoration: none;
+  transition:
+    background var(--duration-base) var(--ease-premium),
+    border-color var(--duration-base) var(--ease-premium),
+    transform var(--duration-base) var(--ease-premium);
+  margin-top: -8px;
+}
+.contato__linkedin:hover {
+  background: rgba(252, 209, 125, 0.08);
+  border-color: rgba(252, 209, 125, 0.5);
+  transform: translateY(-1px);
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 800px) {
   .contato__grid { max-width: 420px; }

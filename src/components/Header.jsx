@@ -8,6 +8,7 @@ import {
 } from '@phosphor-icons/react'
 import { CONTATO } from '../constants/contact'
 import ShaderButton from './ShaderButton'
+import MaskedShaderIcon from './MaskedShaderIcon'
 import './Header.css'
 
 const NAV_LINKS = [
@@ -110,21 +111,21 @@ function Header() {
             ))}
           </nav>
 
-          {/* Direita: ações de contato */}
+          {/* Direita: ações de contato — ícones recortados do mesmo campo shader (única seed) */}
           <div className="island-nav__actions">
-            <ShaderButton
+            <MaskedShaderIcon
               href={CONTATO.whatsappMessageUrl}
-              variant="primary"
-              iconOnly
               icon={ChatCircleText}
+              variant="primary"
+              size={32}
               ariaLabel="Enviar mensagem no WhatsApp"
               className="island-nav__action island-nav__action--whatsapp"
             />
-            <ShaderButton
+            <MaskedShaderIcon
               href={CONTATO.instagramUrl}
-              variant="dark"
-              iconOnly
               icon={InstagramLogo}
+              variant="primary"
+              size={32}
               ariaLabel="Abrir Instagram"
               className="island-nav__action island-nav__action--instagram"
             />

@@ -1,4 +1,4 @@
-import { ChatCircleText } from '@phosphor-icons/react'
+import { ChatCircleText, LinkedinLogo } from '@phosphor-icons/react'
 import ShaderButton from '../components/ShaderButton'
 import { CONTATO } from '../constants/contact'
 import './Contato.css'
@@ -38,6 +38,16 @@ function Contato() {
             {CONTATO.email}
           </a>
         </p>
+
+        <a
+          href={CONTATO.linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="contato__linkedin"
+        >
+          <LinkedinLogo size={16} weight="light" />
+          <span>Conecte-se no LinkedIn</span>
+        </a>
       </div>
     </section>
   )

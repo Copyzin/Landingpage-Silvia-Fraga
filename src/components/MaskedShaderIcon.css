@@ -1,0 +1,50 @@
+.masked-shader-icon {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  transition: transform var(--duration-base) var(--ease-premium);
+  will-change: transform;
+}
+
+.masked-shader-icon:hover { transform: scale(1.08); }
+.masked-shader-icon:active { transform: scale(0.94); }
+.masked-shader-icon:focus-visible {
+  outline: 2px solid var(--color-action);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+/* Fonte do mask: presente no DOM (para serialização via ref) mas invisível */
+.masked-shader-icon__src {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Camada visível com o shader, recortada pela silhueta do ícone */
+.masked-shader-icon__shader {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  transition: opacity 200ms var(--ease-premium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masked-shader-icon,
+  .masked-shader-icon__shader { transition: none; }
+  .masked-shader-icon:hover { transform: none; }
+}
