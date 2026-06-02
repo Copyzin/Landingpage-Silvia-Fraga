@@ -249,4 +249,14 @@
   .hero__ctas { flex-direction: column; align-items: stretch; }
   .hero__ctas > * { width: 100%; justify-content: center; }
   .hero__meta { font-size: 12px; }
+
+  .hero__seal {
+    gap: 10px;
+    padding: 8px 14px;
+  }
+  .hero__seal-name { font-size: 12px; }
+  .hero__seal-foot {
+    font-size: 8px;
+    letter-spacing: 0.18em;
+  }
 }
