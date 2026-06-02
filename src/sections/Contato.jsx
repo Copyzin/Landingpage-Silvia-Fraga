@@ -7,15 +7,20 @@ function Contato() {
   return (
     <section id="contato" className="contato">
       <div className="contato__ambient" aria-hidden="true" />
+      <div className="contato__flor" aria-hidden="true">
+        <img src="/plantas/flor-branca.png" alt="" />
+      </div>
+      <div className="contato__planta-direita" aria-hidden="true">
+        <img src="/plantas/close-up-plant-leaves.png" alt="" />
+      </div>
       <div className="container contato__inner">
         <header className="contato__header">
-          <span className="eyebrow eyebrow--dark">04 — Fale com a Silvia</span>
+          <span className="eyebrow eyebrow--dark">05 — Fale com a Silvia</span>
           <h2 className="contato__title">
             Pronta para defender o <em>que importa</em>.
           </h2>
           <p className="contato__lead">
-            Resposta em até 24 horas úteis. Atendimento direto com a
-            advogada — sem intermediários, sem ruído.
+            Atendimento ágil e direto com a advogada: sem intermediários, sem ruído.
           </p>
         </header>
 
@@ -25,7 +30,7 @@ function Contato() {
             variant="primary"
             size="xl"
             icon={ChatCircleText}
-            sublabel="Resposta em até 24h úteis"
+            sublabel="Atendimento ágil"
             className="contato__cta"
           >
             Enviar WhatsApp

@@ -8,12 +8,11 @@
   pointer-events: none;
   font-family: var(--font-archivo);
   transform: translate(-50%, 0);
-  transition: transform 500ms var(--ease-premium), opacity 400ms var(--ease-premium);
+  transition: transform 500ms var(--ease-premium);
   will-change: transform;
 }
 .island-nav.is-hidden {
   transform: translate(-50%, -160%);
-  opacity: 0;
   pointer-events: none;
 }
 

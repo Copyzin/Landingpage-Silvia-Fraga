@@ -88,8 +88,7 @@ function EspecialidadeLayout() {
               Pronta para te orientar sobre {esp.titulo}.
             </h3>
             <p className="esp-page__cta-lead">
-              Conte o seu caso. Em até 24 horas úteis você recebe um retorno
-              direto, com avaliação prática e próximos passos.
+              Conte o seu caso e receba um retorno direto, com avaliação prática e próximos passos.
             </p>
             <ShaderButton
               href={CONTATO.whatsappMessageWithContext(esp.whatsappContext)}

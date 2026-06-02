@@ -12,6 +12,7 @@ import MaskedShaderIcon from './MaskedShaderIcon'
 import './Header.css'
 
 const NAV_LINKS = [
+  { label: 'A profissional', anchor: '#sobre' },
   { label: 'Especialidades', anchor: '#especialidades' },
   { label: 'Publicações', anchor: '#publicacoes' },
   { label: 'Visite-nos', anchor: '#visite-nos' },

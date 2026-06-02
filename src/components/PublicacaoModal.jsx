@@ -71,7 +71,7 @@ function PublicacaoModal({ publicacao, onClose }) {
             >
               <img
                 src={publicacao.imagem}
-                alt=""
+                alt={publicacao.imagemAlt || ''}
                 className="pub-modal__image"
               />
               <span className="pub-modal__image-hint" aria-hidden="true">
@@ -82,7 +82,7 @@ function PublicacaoModal({ publicacao, onClose }) {
             <div className="pub-modal__image-wrap">
               <img
                 src={publicacao.imagem}
-                alt=""
+                alt={publicacao.imagemAlt || ''}
                 className="pub-modal__image"
               />
             </div>
@@ -115,7 +115,7 @@ function PublicacaoModal({ publicacao, onClose }) {
       <ImageLightbox
         open={lightboxOpen}
         src={publicacao.imagem}
-        alt={publicacao.titulo}
+        alt={publicacao.imagemAlt || publicacao.titulo}
         onClose={() => setLightboxOpen(false)}
       />
     </div>

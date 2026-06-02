@@ -6,9 +6,12 @@ import './Especialidades.css'
 function Especialidades() {
   return (
     <section id="especialidades" className="section especialidades">
+      <div className="esp__deco esp__deco--right" aria-hidden="true">
+        <img src="/plantas/vazo-planta.png" alt="" />
+      </div>
       <div className="container">
         <header className="especialidades__header">
-          <span className="eyebrow">01 — Áreas de atuação</span>
+          <span className="eyebrow">02 — Áreas de atuação</span>
           <h2 className="especialidades__title">
             Cinco frentes, uma <em>defesa estratégica</em>.
           </h2>

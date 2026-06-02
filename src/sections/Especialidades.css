@@ -1,6 +1,27 @@
 .especialidades {
   background: var(--color-surface-raised);
   border-top: 1px solid var(--color-border-subtle);
+  overflow: hidden;
+}
+
+/* Botanical decoration */
+.esp__deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+.esp__deco--right {
+  bottom: 0;
+  right: 40px;
+  transform: none;
+  width: 360px;
+  opacity: 0.55;
+}
+.esp__deco img { width: 100%; display: block; }
+
+@media (max-width: 768px) {
+  .esp__deco { display: none; }
 }
 
 .especialidades__header {

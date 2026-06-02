@@ -19,11 +19,27 @@ export const ESPECIALIDADES = [
       },
       {
         type: 'h2',
+        text: 'Reforma tributária no agro: sua fazenda está pronta para o IBS e a CBS?',
+      },
+      {
+        type: 'p',
+        text: 'O que muda na prática e o que o produtor rural precisa saber. Antes da reforma, eram cinco tributos (PIS, Cofins, IPI, ICMS e ISS), cada um com suas regras e suas competências de estado e município.',
+      },
+      {
+        type: 'p',
+        text: 'Agora, esses cinco dão lugar a dois: o IBS e a CBS, com novidades no cálculo e no modelo de IVA dual. A lógica do IVA é direta: paga-se imposto apenas sobre o valor agregado ao produto.',
+      },
+      {
+        type: 'p',
+        text: 'Mas atenção: nem todo produtor rural será enquadrado no IBS e na CBS. O primeiro passo é descobrir em qual grupo você se encaixa, e é aí que entra a assessoria especializada, com atendimento ágil e personalizado.',
+      },
+      {
+        type: 'h2',
         text: 'O que entregamos',
       },
       {
         type: 'p',
-        text: 'Atuamos na revisão de apurações de FUNRURAL, ITR e na recuperação de créditos de PIS/COFINS sobre insumos. Construímos planejamentos preventivos que dialogam com a realidade da safra e do regime de caixa do produtor — não com modelos abstratos importados de outras indústrias.',
+        text: 'Atuamos na revisão de apurações de FUNRURAL, ITR e na recuperação de créditos de PIS/COFINS sobre insumos. Construímos planejamentos preventivos que dialogam com a realidade da safra e do regime de caixa do produtor, não com modelos abstratos importados de outras indústrias.',
       },
       {
         type: 'p',
@@ -31,7 +47,7 @@ export const ESPECIALIDADES = [
       },
       {
         type: 'quote',
-        text: 'A tributação no agro não é apenas técnica fiscal — é a tradução jurídica de como o capital circula no campo.',
+        text: 'A tributação no agro não é apenas técnica fiscal: é a tradução jurídica de como o capital circula no campo.',
       },
       {
         type: 'h2',
@@ -56,7 +72,23 @@ export const ESPECIALIDADES = [
     conteudo: [
       {
         type: 'p',
-        text: 'Planejar a sucessão patrimonial é, antes de qualquer coisa, um exercício de honestidade familiar. O direito entra como ferramenta — não como protagonista — para preservar relações, evitar litígios futuros e proteger o patrimônio construído ao longo de uma vida.',
+        text: 'Planejar a sucessão patrimonial é, antes de qualquer coisa, um exercício de honestidade familiar. O direito entra como ferramenta (não como protagonista) para preservar relações, evitar litígios futuros e proteger o patrimônio construído ao longo de uma vida.',
+      },
+      {
+        type: 'h2',
+        text: 'Por que não deixar o planejamento sucessório para depois?',
+      },
+      {
+        type: 'p',
+        text: 'Para o produtor rural, planejar a sucessão é decisivo: não se trata apenas de patrimônio, mas da história construída ao longo de uma vida e da transferência de gestão e de bens entre gerações.',
+      },
+      {
+        type: 'p',
+        text: 'É imprescindível que o planejamento esteja conectado à governança, à estruturação jurídica e às ferramentas adequadas a cada caso, evitando os altos custos do inventário e o risco de fragmentação das terras, assegurando a continuidade e a profissionalização do negócio.',
+      },
+      {
+        type: 'p',
+        text: 'Há diversas ferramentas (doação com reserva de usufruto, testamento, Fiagro, holding familiar, entre outras), mas só um diagnóstico patrimonial e familiar revela qual é a mais adequada. Um bom planejamento impede, ainda, que a propriedade rural seja dividida em áreas inviáveis para a atividade agrícola.',
       },
       {
         type: 'h2',
@@ -72,7 +104,7 @@ export const ESPECIALIDADES = [
       },
       {
         type: 'quote',
-        text: 'Um bom planejamento sucessório não é o que protege o patrimônio do imposto — é o que protege a família dela mesma.',
+        text: 'Um bom planejamento sucessório não é o que protege o patrimônio do imposto: é o que protege a família dela mesma.',
       },
       {
         type: 'p',
@@ -93,7 +125,7 @@ export const ESPECIALIDADES = [
     conteudo: [
       {
         type: 'p',
-        text: 'A execução fiscal chega quase sempre como um susto: um bloqueio via SISBAJUD, uma penhora online, a citação na empresa. Nesse momento, a primeira tarefa não é discutir o mérito — é estancar o sangue.',
+        text: 'A execução fiscal chega quase sempre como um susto: um bloqueio via SISBAJUD, uma penhora online, a citação na empresa. Nesse momento, a primeira tarefa não é discutir o mérito: é estancar o sangue.',
       },
       {
         type: 'h2',
@@ -101,7 +133,7 @@ export const ESPECIALIDADES = [
       },
       {
         type: 'p',
-        text: 'Avaliamos rapidamente a regularidade da inscrição em dívida ativa, identificamos vícios formais que permitam exceção de pré-executividade e desenhamos a melhor estratégia de garantia — seja seguro garantia, fiança bancária, depósito ou penhora indicada. O objetivo imediato: suspender a exigibilidade e devolver oxigênio operacional ao cliente.',
+        text: 'Avaliamos rapidamente a regularidade da inscrição em dívida ativa, identificamos vícios formais que permitam exceção de pré-executividade e desenhamos a melhor estratégia de garantia: seguro-garantia, fiança bancária, depósito ou penhora indicada. O objetivo imediato: suspender a exigibilidade e devolver oxigênio operacional ao cliente.',
       },
       {
         type: 'p',
@@ -124,7 +156,7 @@ export const ESPECIALIDADES = [
     subtitulo:
       'Da posse ao título: o caminho jurídico para consolidar a propriedade rural.',
     resumo:
-      'Usucapião rural, georreferenciamento, retificação de matrícula e regularização perante o INCRA.',
+      'Georreferenciamento, retificação de matrícula e regularização perante o INCRA.',
     destaque: false,
     whatsappContext: 'Regularização Fundiária',
     conteudo: [
@@ -142,7 +174,7 @@ export const ESPECIALIDADES = [
       },
       {
         type: 'p',
-        text: 'Atendemos tanto o pequeno produtor — que precisa do título para acessar crédito rural e segurança jurídica de família — quanto o grande proprietário, cuja regularização viabiliza operações de investimento, garantia e sucessão.',
+        text: 'Atendemos tanto o pequeno produtor (que precisa do título para acessar crédito rural e segurança jurídica de família) quanto o grande proprietário, cuja regularização viabiliza operações de investimento, garantia e sucessão.',
       },
       {
         type: 'quote',
@@ -175,11 +207,11 @@ export const ESPECIALIDADES = [
       },
       {
         type: 'p',
-        text: 'Avaliamos a vocação da operação: se há exploração rural direta, arrendamento, parceria, atividade agroindustrial ou simples gestão patrimonial. Cada vocação aponta para um regime tributário mais eficiente — lucro real, presumido ou regimes específicos para atividade rural pessoa jurídica.',
+        text: 'Avaliamos a vocação da operação: se há exploração rural direta, arrendamento, parceria, atividade agroindustrial ou simples gestão patrimonial. Cada vocação aponta para um regime tributário mais eficiente: lucro real, presumido ou regimes específicos para atividade rural pessoa jurídica.',
       },
       {
         type: 'p',
-        text: 'Analisamos também a integralização dos imóveis rurais: matrículas, ônus, georreferenciamento, ITBI, ganho de capital diferido e os efeitos no ITR. Não basta criar a holding — é preciso integralizar bem.',
+        text: 'Analisamos também a integralização dos imóveis rurais: matrículas, ônus, georreferenciamento, ITBI, ganho de capital diferido e os efeitos no ITR. Não basta criar a holding: é preciso integralizar bem.',
       },
       {
         type: 'quote',
@@ -191,7 +223,7 @@ export const ESPECIALIDADES = [
       },
       {
         type: 'p',
-        text: 'Acompanhamos a redação de acordo de sócios, protocolo familiar, definição de cargos e regras de retirada — porque a holding só protege o que se discute antes do conflito.',
+        text: 'Acompanhamos a redação de acordo de sócios, protocolo familiar, definição de cargos e regras de retirada, porque a holding só protege o que se discute antes do conflito.',
       },
     ],
   },

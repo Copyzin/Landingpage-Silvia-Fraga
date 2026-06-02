@@ -35,6 +35,7 @@ desktop.ini
 .claude/
 .agents/
 skills-lock.json
+.playwright-mcp/
 
 # Source assets soltos na raiz (originais antes do processamento em public/)
 /foto\ da\ dona.jpeg

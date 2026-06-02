@@ -1,6 +1,27 @@
 .publicacoes {
   background: var(--color-surface-wash);
   border-top: 1px solid var(--color-border-subtle);
+  overflow: hidden;
+}
+
+/* Botanical decoration */
+.pub__deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+.pub__deco--vazo {
+  bottom: 580px;
+  left: 40px;
+  transform: none;
+  width: 270px;
+  opacity: 0.52;
+}
+.pub__deco img { width: 100%; display: block; }
+
+@media (max-width: 768px) {
+  .pub__deco { display: none; }
 }
 
 .publicacoes__header {

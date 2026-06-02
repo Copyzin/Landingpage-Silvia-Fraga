@@ -103,6 +103,17 @@ Endereços de Campinas e São Paulo geram automaticamente URLs de embed iframe, 
 
 Sempre `cubic-bezier(0.32, 0.72, 0, 1)` (var `--ease-premium`). Banidos `ease-in-out` e `linear` (exceto em loops perpétuos como o shader). Anima só `transform` e `opacity` — nunca `top/left/width/height`. `backdrop-filter` apenas em fixed/sticky.
 
+### Flor do Hero (`src/components/HeroFlower.jsx`) — regra: nunca teleporta
+
+**Regra invariante: a posição renderizada da flor nunca pode saltar instantaneamente — toda mudança de posição, por qualquer motivo (cursor, scroll, troca de aba/tela, foco), é contínua ou amortecida.** Todo o movimento vive num **único integrador** (`useAnimationFrame`), sem estado React e sem `useSpring`:
+
+- **Idle** (órbita elíptica + respiro) usa **tempo acumulado por delta COM CLAMP** (`DELTA_MAX`), nunca tempo absoluto — assim um `rAF` suspenso (aba oculta) só congela a fase e retoma de onde parou, sem salto ao voltar. Entra com um ramp (smoothstep) pra nascer do centro no mount.
+- **Follow** é uma **mola feita à mão** (Euler semi-implícito) integrada no mesmo loop; o amortecimento muda por frame (crítico ao seguir, sub-amortecido = 1 quique ao soltar) — sem trocar config de mola, sem re-render.
+- Estado (histerese dentro/fora da caixa, presença do cursor, scrolling) vive em **refs**; mesmo se oscilar, só muda o **alvo** — a posição é sempre integrada em direção a ele, jamais setada com salto.
+- Solta o follow quando o cursor sai da janela/aba/tela (`pointerleave` no `documentElement`, `visibilitychange`, `blur`).
+
+**Nunca** reintroduza estado React no loop de animação, nem troque a config de uma mola por re-render, nem dirija a posição por tempo absoluto, nem faça `.set()`/`.jump()` de um valor renderizado com um destino descontínuo. Os motion values de saída (`mx`/`my`/`mrot`/`mscale`) só podem ser escritos pelo integrador, um passo pequeno por frame. Usa Motion (`motion` / framer-motion).
+
 ## Anti-padrões e regras de projeto
 
 - Não use Tailwind/CSS-in-JS — vanilla CSS com tokens.
@@ -112,10 +123,11 @@ Sempre `cubic-bezier(0.32, 0.72, 0, 1)` (var `--ease-premium`). Banidos `ease-in
 - Não use `h-screen` — sempre `min-height: 100dvh` (iOS Safari fix).
 - Não adicione `scroll` event listeners sem `passive: true` e rAF throttle.
 - Para emojis/símbolos use sempre Phosphor Light, nunca emoji nativo.
+- A flor do Hero nunca teleporta: nunca `.set()`/`.jump()` direto num valor renderizado/spring de saída — só nas fontes das molas (`target*`) ou em valores idle contínuos. Ver "Flor do Hero".
 
 ## Imagens mocadas
 
-Publicações e fachadas usam `picsum.photos/seed/<slug>/W/H`. Para trocar por imagens reais, edite as URLs em `src/data/publicacoes.js` e `src/constants/contact.js` (campo `fachadas[]` por sede — array suporta carrossel).
+As **publicações** usam fotos reais de agronegócio (uso comercial livre, Pexels) em `public/publicacoes/<slug>.jpg` (~1600px, JPG otimizado), referenciadas em `src/data/publicacoes.js` pelos campos `imagem` + `imagemAlt` (alt descritivo, usado em card/modal/lightbox). Cada foto casa com o tema da publicação e foi curada em tom quente p/ harmonizar com a paleta. As **fachadas** ainda podem usar `picsum.photos/seed/<slug>/W/H` — para trocar por imagens reais, edite `src/constants/contact.js` (campo `fachadas[]` por sede — array suporta carrossel).
 
 ## Assets em `public/`
 

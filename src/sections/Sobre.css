@@ -1,0 +1,230 @@
+.sobre {
+  position: relative;
+  background: var(--color-surface-soft);
+  overflow: hidden;
+}
+
+/* Botanical decoration */
+.sobre__deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+.sobre__deco--right {
+  bottom: 60px;
+  right: 20px;
+  width: 165px;
+  opacity: 0.42;
+  transform: rotate(12deg) scaleX(-1);
+}
+.sobre__deco img { width: 100%; display: block; }
+
+@media (max-width: 768px) {
+  .sobre__deco { display: none; }
+}
+
+.sobre__inner {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+}
+
+/* === Coluna retrato (Double-Bezel, igual à Hero) === */
+.sobre__portrait {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin-inline: auto;
+}
+.sobre__portrait-inner {
+  background: var(--color-surface-dark-muted);
+}
+.sobre__portrait-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.02) saturate(1.05);
+}
+
+/* Selo da pessoa (aqui é a profissional, não a marca) */
+.sobre__seal {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 18px;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid rgba(228, 224, 180, 0.28);
+  border-radius: 6px;
+  color: var(--color-text-inverse);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 24px -10px rgba(0, 0, 0, 0.55);
+  max-width: calc(100% - 32px);
+  white-space: nowrap;
+}
+.sobre__seal-name {
+  font-family: var(--font-cinzel);
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--color-text-inverse);
+}
+.sobre__seal-divider {
+  display: block;
+  width: 1px;
+  height: 14px;
+  background: rgba(228, 224, 180, 0.45);
+  flex-shrink: 0;
+}
+.sobre__seal-foot {
+  font-family: var(--font-archivo);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.88;
+}
+
+/* === Coluna conteúdo === */
+.sobre__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(18px, 2.4vw, 26px);
+  max-width: 620px;
+}
+.sobre__content .eyebrow { align-self: flex-start; }
+
+.sobre__title {
+  font-family: var(--font-cinzel);
+  font-size: clamp(30px, 4.4vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+.sobre__title em {
+  font-style: italic;
+  color: var(--color-action-hover);
+  font-weight: 500;
+}
+
+.sobre__lead {
+  font-family: var(--font-archivo);
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
+  max-width: 58ch;
+}
+
+/* Áreas de foco — chips inline */
+.sobre__foco {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.sobre__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-wash);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+  font-family: var(--font-archivo);
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Certificações — lista com hairlines, sem caixas */
+.sobre__creds {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.sobre__cred {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-block: 14px;
+}
+.sobre__cred + .sobre__cred {
+  border-top: 1px solid var(--color-border-subtle);
+}
+.sobre__cred-icon { color: var(--color-text-primary); flex-shrink: 0; }
+.sobre__cred-text { display: flex; flex-direction: column; gap: 2px; }
+.sobre__cred-label {
+  font-family: var(--font-archivo);
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+.sobre__cred-detail {
+  font-family: var(--font-archivo);
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+}
+
+/* Atendimento — dois blocos, online em destaque */
+.sobre__atendimento {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.sobre__atende {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.45);
+}
+.sobre__atende svg { color: var(--color-text-primary); flex-shrink: 0; }
+.sobre__atende--featured {
+  border-color: rgba(252, 209, 125, 0.7);
+  background: rgba(252, 209, 125, 0.14);
+}
+.sobre__atende--featured svg { color: var(--color-action-hover); }
+.sobre__atende-text { display: flex; flex-direction: column; gap: 3px; }
+.sobre__atende-label {
+  font-family: var(--font-archivo);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+.sobre__atende-detail {
+  font-family: var(--font-archivo);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--color-text-tertiary);
+}
+
+.sobre__cta { margin-top: clamp(6px, 1vw, 12px); }
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .sobre__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .sobre__portrait {
+    order: -1;
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sobre__atendimento { grid-template-columns: 1fr; }
+  .sobre__cta { width: 100%; }
+  .sobre__cta > * { width: 100%; justify-content: center; }
+}

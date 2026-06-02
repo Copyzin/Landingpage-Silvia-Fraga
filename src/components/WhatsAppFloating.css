@@ -96,15 +96,15 @@
   outline-offset: 4px;
 }
 
-/* ===== Mobile: smaller, more discreet — same pattern ===== */
+/* ===== Mobile: larger, prominent ===== */
 @media (max-width: 768px) {
   .wa-floating {
-    width: 46px;
-    height: 46px;
+    width: 80px;
+    height: 80px;
   }
   .wa-floating__icon {
-    width: 30px;
-    height: 30px;
+    width: 56px;
+    height: 56px;
   }
   .wa-floating::before { animation-duration: 3400ms; }
 }

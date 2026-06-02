@@ -10,9 +10,12 @@ function Publicacoes() {
 
   return (
     <section id="publicacoes" className="section publicacoes">
+      <div className="pub__deco pub__deco--vazo" aria-hidden="true">
+        <img src="/plantas/planta-contato.png" alt="" />
+      </div>
       <div className="container">
         <header className="publicacoes__header">
-          <span className="eyebrow">02 — Publicações</span>
+          <span className="eyebrow">03 — Publicações</span>
           <h2 className="publicacoes__title">
             <em>Análises</em> e pareceres.
           </h2>
@@ -37,7 +40,7 @@ function Publicacoes() {
                 <div className="pub-card__image-wrap">
                   <img
                     src={pub.imagem}
-                    alt=""
+                    alt={pub.imagemAlt || ''}
                     className="pub-card__image"
                     loading="lazy"
                   />
