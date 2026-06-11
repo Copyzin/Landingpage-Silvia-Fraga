@@ -8,9 +8,13 @@ import {
 import ShaderButton from './ShaderButton'
 import ConfirmDialog from './ConfirmDialog'
 import SedeImageCarousel from './SedeImageCarousel'
+import { CONTATO } from '../constants/contact'
 import './SedeCard.css'
 
-const HORARIO_LABEL = 'Atendemos de Seg–Sex, 08:00 às 18:00'
+const HORARIO_LABEL = 'Atendimento presencial somente com agendamento prévio'
+const AGENDAMENTO_URL = CONTATO.whatsappMessageWithContext(
+  'agendamento de uma consulta (vim pelo site)'
+)
 
 function SedeCard({ sede }) {
   const fachadas =
@@ -50,10 +54,17 @@ function SedeCard({ sede }) {
             <div className="sede-card__head">
               <MapPin size={22} weight="light" className="sede-card__pin" />
               <h3 className="sede-card__title">{sede.cidade}</h3>
-              <span className="sede-card__hours" aria-label={HORARIO_LABEL}>
+              <a
+                href={AGENDAMENTO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sede-card__hours sede-card__hours--link"
+                aria-label="Agendar horário via WhatsApp"
+                data-no-fullscreen
+              >
                 <Clock size={12} weight="light" aria-hidden="true" />
                 <span>{HORARIO_LABEL}</span>
-              </span>
+              </a>
             </div>
 
             <a

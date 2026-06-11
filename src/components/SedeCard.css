@@ -69,6 +69,19 @@
   flex-shrink: 0;
 }
 .sede-card__hours > span { white-space: nowrap; }
+.sede-card__hours--link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-premium),
+              border-color var(--duration-fast) var(--ease-premium);
+}
+.sede-card__hours--link:hover,
+.sede-card__hours--link:focus-visible {
+  background: rgba(252, 209, 125, 0.28);
+  border-color: rgba(228, 215, 172, 0.85);
+  text-decoration: underline;
+  outline: none;
+}
 
 @media (max-width: 480px) {
   .sede-card__hours {

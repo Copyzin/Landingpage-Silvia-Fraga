@@ -103,15 +103,12 @@ h4, h5, h6 {
 .reveal {
   opacity: 0;
   transform: translateY(28px);
-  filter: blur(8px);
-  transition: opacity 800ms var(--ease-premium),
-              transform 800ms var(--ease-premium),
-              filter 800ms var(--ease-premium);
+  transition: opacity 700ms var(--ease-premium),
+              transform 700ms var(--ease-premium);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 /* ===== Grain Overlay (global texture) ===== */

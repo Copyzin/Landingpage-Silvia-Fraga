@@ -1,32 +1,33 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-  SealCheck,
-  GraduationCap,
-  Certificate,
-  VideoCamera,
-  CalendarCheck,
-  ChatCircleText,
-} from '@phosphor-icons/react'
+import { Link } from 'react-router-dom'
+import { ChatCircleText, ArrowUpRight } from '@phosphor-icons/react'
 import ShaderButton from '../components/ShaderButton'
 import { CONTATO } from '../constants/contact'
 import './Sobre.css'
 
-const CREDENCIAIS = [
-  { icon: SealCheck, label: 'OAB/SP', detail: 'Registro ativo' },
-  { icon: GraduationCap, label: 'Pós-graduação', detail: 'Direito no Agronegócio' },
-  { icon: Certificate, label: '+10 anos', detail: 'de atuação no agronegócio' },
+// Áreas de foco → cada chip leva à sua sub-rota de especialidade
+const FOCO = [
+  { label: 'Tributário no Agro', slug: 'tributario-no-agro' },
+  { label: 'Defesa em Execução Fiscal', slug: 'defesa-em-execucao-fiscal' },
+  { label: 'Planejamento Sucessório', slug: 'planejamento-sucessorio' },
 ]
 
-const FOCO = [
-  'Tributário no Agro',
-  'Defesa em Execução Fiscal',
-  'Planejamento Sucessório',
+// Faixa de credibilidade (dois níveis: destaque dourado + detalhe)
+const STATS = [
+  { primary: '+10 anos', detail: 'de atuação no agronegócio' },
+  { primary: 'OAB/SP', detail: 'registro ativo na ordem' },
+  { primary: 'Pós-graduação', detail: 'Direito no Agronegócio' },
+  { primary: 'Atendimento online', detail: 'em todo o estado de São Paulo' },
 ]
+
+const PARALLAX_MAX = 26 // px — menor que a folga vertical da imagem (32px), nunca expõe borda
 
 function Sobre() {
   const sectionRef = useRef(null)
+  const portraitImgRef = useRef(null)
   const [revealed, setRevealed] = useState(false)
 
+  // Reveal on scroll (mesmo padrão das outras seções)
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
@@ -50,41 +51,72 @@ function Sobre() {
     return () => obs.disconnect()
   }, [])
 
+  // Parallax sutil do retrato — só translateY na imagem, integrado por rAF.
+  // Honra prefers-reduced-motion. A imagem tem folga vertical (top:-32px,
+  // height +64px), então o deslocamento nunca revela borda.
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches
+    if (prefersReduced) return undefined
+    const sec = sectionRef.current
+    const img = portraitImgRef.current
+    if (!sec || !img) return undefined
+
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const rect = sec.getBoundingClientRect()
+      const vh = window.innerHeight || document.documentElement.clientHeight
+      // progresso 0..1 enquanto a seção cruza a viewport
+      const progress = (vh - rect.top) / (vh + rect.height)
+      const clamped = Math.max(0, Math.min(1, progress))
+      const offset = (clamped - 0.5) * 2 * PARALLAX_MAX
+      img.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    update()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+
   const reveal = (index, base = '') => ({
-    className: [base, 'reveal', revealed ? 'is-visible' : ''].filter(Boolean).join(' '),
+    className: [base, 'reveal', revealed ? 'is-visible' : '']
+      .filter(Boolean)
+      .join(' '),
     style: { transitionDelay: `${index * 90}ms` },
   })
 
   return (
-    <section id="sobre" className="section sobre" ref={sectionRef}>
-      <div className="sobre__deco sobre__deco--right" aria-hidden="true">
-        <img src="/plantas/rose-1.png" alt="" />
-      </div>
-      <div className="container sobre__inner">
-        {/* Coluna retrato — mesmo Double-Bezel da Hero */}
-        <div {...reveal(0, 'sobre__portrait')}>
-          <div className="bezel">
-            <div className="bezel__inner sobre__portrait-inner">
-              <img
-                src="/silvia-fraga.jpg"
-                alt="Silvia Fraga, advogada"
-                className="sobre__portrait-img"
-                loading="lazy"
-              />
-              <div className="sobre__seal" aria-hidden="true">
-                <span className="sobre__seal-name">Silvia Fraga</span>
-                <span className="sobre__seal-divider" />
-                <span className="sobre__seal-foot">Advogada · OAB/SP</span>
-              </div>
-            </div>
+    <section id="sobre" className="sobre" ref={sectionRef}>
+      <div className="sobre__spread">
+        {/* Retrato full-bleed à esquerda + masthead sobre o scrim */}
+        <div className={'sobre__portrait' + (revealed ? ' is-visible' : '')}>
+          <img
+            ref={portraitImgRef}
+            src="/silvia-fraga-cover.jpg"
+            alt="Silvia Fraga, advogada"
+            className="sobre__portrait-img"
+            loading="lazy"
+          />
+          <span className="sobre__scrim" aria-hidden="true" />
+          <div className="sobre__masthead">
+            <span className="sobre__masthead-name">Silvia Fraga</span>
+            <span className="sobre__masthead-rule" aria-hidden="true" />
+            <span className="sobre__masthead-role">Advocacia · OAB/SP</span>
           </div>
         </div>
 
-        {/* Coluna conteúdo */}
+        {/* Coluna de conteúdo */}
         <div className="sobre__content">
-          <span {...reveal(1, 'eyebrow')}>
-            01 — A profissional
-          </span>
+          <span {...reveal(0, 'eyebrow')}>01 — A profissional</span>
 
           <h2 {...reveal(1, 'sobre__title')}>
             Técnica, proximidade e <em>dedicação ao seu caso</em>.
@@ -97,57 +129,30 @@ function Sobre() {
             execução fiscal e planejamento sucessório.
           </p>
 
-          <p {...reveal(2, 'sobre__lead')}>
+          <p {...reveal(3, 'sobre__lead')}>
             Uma equipe parceira, capacitada e dedicada, cuida das suas
             questões jurídicas com competência e agilidade: atendimento
             personalizado e sempre próximo de você.
           </p>
 
-          {/* Áreas de foco */}
-          <div {...reveal(3, 'sobre__foco')}>
+          <div {...reveal(4, 'sobre__foco')}>
             {FOCO.map((area) => (
-              <span key={area} className="sobre__chip">
-                {area}
-              </span>
+              <Link
+                key={area.slug}
+                to={`/especialidades/${area.slug}`}
+                className="sobre__chip"
+              >
+                {area.label}
+                <ArrowUpRight size={14} weight="light" aria-hidden="true" />
+              </Link>
             ))}
           </div>
 
-          {/* Certificações */}
-          <ul {...reveal(4, 'sobre__creds')}>
-            {CREDENCIAIS.map(({ icon: Icon, label, detail }) => (
-              <li key={label} className="sobre__cred">
-                <Icon size={22} weight="light" className="sobre__cred-icon" />
-                <span className="sobre__cred-text">
-                  <span className="sobre__cred-label">{label}</span>
-                  <span className="sobre__cred-detail">{detail}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          {/* Atendimento personalizado */}
-          <div {...reveal(5, 'sobre__atendimento')}>
-            <div className="sobre__atende sobre__atende--featured">
-              <VideoCamera size={24} weight="light" />
-              <div className="sobre__atende-text">
-                <span className="sobre__atende-label">Atendimento online</span>
-                <span className="sobre__atende-detail">
-                  Para todo o estado de São Paulo
-                </span>
-              </div>
-            </div>
-            <div className="sobre__atende">
-              <CalendarCheck size={24} weight="light" />
-              <div className="sobre__atende-text">
-                <span className="sobre__atende-label">
-                  Atendimento presencial
-                </span>
-                <span className="sobre__atende-detail">
-                  Em Campinas e São Paulo, somente mediante agendamento prévio
-                </span>
-              </div>
-            </div>
-          </div>
+          <p {...reveal(5, 'sobre__note')}>
+            <span className="sobre__note-dot" aria-hidden="true" />
+            Atendimento presencial em Campinas e São Paulo, somente mediante
+            agendamento prévio.
+          </p>
 
           <div {...reveal(6, 'sobre__cta')}>
             <ShaderButton
@@ -163,6 +168,20 @@ function Sobre() {
             </ShaderButton>
           </div>
         </div>
+      </div>
+
+      {/* Faixa de credibilidade — full-bleed, vinho profundo */}
+      <div className="sobre__band">
+        {STATS.map((stat, i) => (
+          <div
+            key={stat.primary}
+            className={'sobre__stat reveal' + (revealed ? ' is-visible' : '')}
+            style={{ transitionDelay: `${i * 90}ms` }}
+          >
+            <span className="sobre__stat-primary">{stat.primary}</span>
+            <span className="sobre__stat-detail">{stat.detail}</span>
+          </div>
+        ))}
       </div>
     </section>
   )

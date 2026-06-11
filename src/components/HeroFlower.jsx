@@ -190,20 +190,40 @@ function HeroFlower() {
   return (
     <div className="bezel" ref={panelRef}>
       <div className="bezel__inner hero__art-inner">
-        <motion.img
-          src="/plantas/flor-branca.png"
-          alt=""
-          className="hero__art-img"
-          aria-hidden="true"
-          loading="eager"
-          fetchPriority="high"
-          style={{ x: mx, y: my, rotate: mrot, scale: mscale }}
-        />
-        <div className="hero__seal" aria-hidden="true">
-          <span className="hero__seal-name">Silvia Fraga</span>
-          <span className="hero__seal-divider" />
-          <span className="hero__seal-foot">Advocacia &amp; Consultoria</span>
-        </div>
+        {isMobile ? (
+          /* Mobile: lockup institucional (logo da cliente) no lugar da flor.
+             Decisão do cliente — ver "Flor do Hero" no CLAUDE.md. Desktop
+             permanece com a magnólia animada (abaixo). */
+          <div className="hero__lockup">
+            <img
+              src="/logo-hero-branca.png"
+              alt="Silvia Fraga — Advocacia e Consultoria Jurídica"
+              className="hero__lockup-logo"
+              loading="eager"
+              fetchPriority="high"
+            />
+            <span className="hero__lockup-rule" aria-hidden="true" />
+            <span className="hero__lockup-name">Silvia Fraga</span>
+            <span className="hero__lockup-role">Advocacia &amp; Consultoria</span>
+          </div>
+        ) : (
+          <>
+            <motion.img
+              src="/plantas/flor-branca.png"
+              alt=""
+              className="hero__art-img"
+              aria-hidden="true"
+              loading="eager"
+              fetchPriority="high"
+              style={{ x: mx, y: my, rotate: mrot, scale: mscale }}
+            />
+            <div className="hero__seal" aria-hidden="true">
+              <span className="hero__seal-name">Silvia Fraga</span>
+              <span className="hero__seal-divider" />
+              <span className="hero__seal-foot">Advocacia &amp; Consultoria</span>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

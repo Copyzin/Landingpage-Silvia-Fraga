@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PUBLICACOES, formatarDataPtBR } from '../data/publicacoes'
 import PublicacaoModal from '../components/PublicacaoModal'
 import './Publicacoes.css'
@@ -7,6 +7,22 @@ const AUTOR_DEFAULT = 'Sílvia Fraga'
 
 function Publicacoes() {
   const [aberta, setAberta] = useState(null)
+
+  // Abre uma publicação a pedido do chat flutuante (WhatsAppFloating).
+  // Scroll instantâneo antes do lock de scroll da modal, para que ao
+  // fechá-la o usuário esteja na seção de publicações.
+  useEffect(() => {
+    const onAbrir = (e) => {
+      const pub = PUBLICACOES.find((p) => p.id === e.detail)
+      if (!pub) return
+      document
+        .getElementById('publicacoes')
+        ?.scrollIntoView({ behavior: 'auto', block: 'start' })
+      setAberta(pub)
+    }
+    window.addEventListener('sf:abrir-publicacao', onAbrir)
+    return () => window.removeEventListener('sf:abrir-publicacao', onAbrir)
+  }, [])
 
   return (
     <section id="publicacoes" className="section publicacoes">

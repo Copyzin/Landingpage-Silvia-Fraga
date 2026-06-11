@@ -133,7 +133,7 @@
 }
 
 .esp-page__body {
-  max-width: 680px;
+  max-width: 880px; /* 680px + 100px de respiro extra em cada lado */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
