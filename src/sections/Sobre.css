@@ -1,26 +1,57 @@
 .sobre {
+  /* Largura da arte sobreposta + recuo do conteúdo/faixa que a contornam.
+     Ambos partem do mesmo x → texto e números alinhados à direita da arte. */
+  --portrait-w: clamp(360px, 42vw, 560px);
+  --content-inset: calc(var(--portrait-w) + clamp(24px, 3vw, 64px));
   position: relative;
-  background: var(--color-surface-soft);
+  /* Fundo em continuidade com a arte (tons amostrados da própria imagem):
+     a "bola" quente do canto inferior-direito vaza para a seção, a luz vem
+     da base-esquerda (direção da iluminação da arte) e o topo-direito clareia. */
+  background:
+    radial-gradient(
+      36% 42% at 41% 80%,
+      rgba(231, 206, 184, 0.55) 0%,
+      rgba(244, 224, 200, 0.22) 45%,
+      transparent 70%
+    ),
+    radial-gradient(
+      90% 85% at 10% 100%,
+      rgba(249, 221, 184, 0.5) 0%,
+      rgba(251, 234, 208, 0.18) 48%,
+      transparent 68%
+    ),
+    radial-gradient(
+      75% 70% at 100% 2%,
+      rgba(253, 243, 230, 0.85) 0%,
+      transparent 60%
+    ),
+    var(--color-surface-soft);
   /* Padding-top moderado; sem padding-bottom para a faixa encostar na base */
   padding-top: clamp(72px, 9vw, 120px);
   padding-bottom: 0;
   overflow: clip;
 }
 
-/* ===== Spread full-bleed (retrato à esquerda + conteúdo à direita) ===== */
+/* ===== Conteúdo à direita; a faixa esquerda fica reservada para a arte ===== */
 .sobre__spread {
-  display: grid;
-  grid-template-columns: 46fr 54fr;
-  gap: clamp(40px, 5vw, 76px);
-  min-height: clamp(560px, 84vh, 840px);
-  align-items: stretch;
+  position: relative; /* contexto da arte absoluta (base = topo da faixa) */
+  display: flex;
+  align-items: flex-start;
+  min-height: clamp(420px, 52vh, 580px);
+  padding-left: var(--content-inset);
 }
 
-/* === Retrato: encosta na borda esquerda da viewport === */
+/* === Arte institucional — grande, ancorada à esquerda, com a base exatamente
+   no topo da faixa escura (bottom: 0 do spread). O fundo creme da arte casa
+   com a seção. O movimento (float + parallax de scroll + cursor) é escrito
+   pelo integrador rAF em Sobre.jsx, travado para nunca descer da base. === */
 .sobre__portrait {
-  position: relative;
-  overflow: hidden;
-  background: var(--color-surface-dark-muted);
+  position: absolute;
+  left: 0;
+  top: clamp(20px, 3vw, 44px); /* alinha ao topo do padding-top do conteúdo */
+  z-index: 2;
+  width: var(--portrait-w);
+  pointer-events: none;
   opacity: 0;
   transition: opacity 800ms var(--ease-premium);
 }
@@ -28,65 +59,9 @@
   opacity: 1;
 }
 .sobre__portrait-img {
-  position: absolute;
-  left: 0;
-  top: -32px;
+  display: block;
   width: 100%;
-  height: calc(100% + 64px); /* folga p/ o parallax não revelar borda */
-  object-fit: cover;
-  object-position: 50% 28%;
-  filter: contrast(1.02) saturate(1.04);
-  will-change: transform;
-}
-
-/* Scrim para legibilidade do masthead */
-.sobre__scrim {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 62%;
-  background: linear-gradient(
-    to top,
-    rgba(33, 3, 4, 0.92) 0%,
-    rgba(33, 3, 4, 0.66) 32%,
-    rgba(33, 3, 4, 0) 100%
-  );
-  pointer-events: none;
-}
-
-.sobre__masthead {
-  position: absolute;
-  left: clamp(24px, 3vw, 48px);
-  right: 24px;
-  bottom: clamp(26px, 3vw, 42px);
-  z-index: 2;
-}
-.sobre__masthead-name {
-  display: block;
-  font-family: var(--font-cinzel);
-  font-weight: var(--font-weight-semibold);
-  font-size: clamp(34px, 4vw, 56px);
-  line-height: 0.98;
-  letter-spacing: 0.01em;
-  color: var(--color-surface-soft);
-}
-.sobre__masthead-rule {
-  display: block;
-  width: 46px;
-  height: 2px;
-  background: var(--color-surface-muted);
-  margin: 14px 0 12px;
-  opacity: 0.9;
-}
-.sobre__masthead-role {
-  display: block;
-  font-family: var(--font-archivo);
-  font-size: 12px;
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--color-text-inverse);
+  height: auto;
 }
 
 /* === Coluna de conteúdo === */
@@ -190,12 +165,13 @@
 }
 
 .sobre__cta {
+  align-self: center;
   margin-top: clamp(4px, 1vw, 10px);
 }
 
 /* ===== Faixa de credibilidade — full-bleed, vinho profundo ===== */
 .sobre__band {
-  margin-top: clamp(56px, 6vw, 88px);
+  margin-top: 0;
   background: var(--color-surface-dark-muted);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -243,26 +219,38 @@
   color: rgba(251, 246, 231, 0.62);
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 900px) {
+/* ===== Responsive =====
+   Abaixo do desktop largo a sobreposição não cabe: a arte volta ao fluxo
+   como card contido no topo e tudo empilha. */
+@media (max-width: 1199px) {
   .sobre {
     padding-top: 0;
   }
-  .sobre__spread {
-    grid-template-columns: 1fr;
-    gap: 0;
-    min-height: 0;
-  }
   .sobre__portrait {
-    height: clamp(420px, 62vh, 600px);
+    position: static;
+    width: auto;
+    z-index: auto;
+    pointer-events: auto;
+    display: grid;
+    place-items: center;
+    padding: clamp(28px, 8vw, 48px) var(--container-padding) 0;
   }
   .sobre__portrait-img {
-    object-position: 50% 24%;
+    width: min(440px, 80vw);
+    filter: none;
+  }
+  .sobre__spread {
+    display: block;
+    padding-left: 0;
+    min-height: 0;
   }
   .sobre__content {
     max-width: none;
-    padding: clamp(32px, 8vw, 48px) var(--container-padding);
+    padding: clamp(28px, 7vw, 44px) var(--container-padding);
     gap: 18px;
+  }
+  .sobre__band {
+    padding-left: 0;
   }
 }
 
@@ -284,12 +272,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sobre__portrait,
-  .sobre__portrait-img,
   .sobre__chip,
   .sobre__chip svg {
     transition: none;
-  }
-  .sobre__portrait-img {
-    transform: none !important;
   }
 }

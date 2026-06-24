@@ -12,18 +12,18 @@
   mix-blend-mode: multiply;
 }
 .vn__deco--left {
-  top: 40px;
+  top: 284px;
   left: 20px;
   width: 180px;
   opacity: 0.55;
   transform: rotate(10deg);
 }
 .vn__deco--right {
-  top: 40px;
+  top: 284px;
   right: 20px;
   width: 180px;
   opacity: 0.55;
-  transform: scaleX(-1) rotate(-10deg);
+  transform: rotate(-10deg);
 }
 .vn__deco img { width: 100%; display: block; }
 

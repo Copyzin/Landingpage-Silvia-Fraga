@@ -20,11 +20,8 @@ const STATS = [
   { primary: 'Atendimento online', detail: 'em todo o estado de São Paulo' },
 ]
 
-const PARALLAX_MAX = 26 // px — menor que a folga vertical da imagem (32px), nunca expõe borda
-
 function Sobre() {
   const sectionRef = useRef(null)
-  const portraitImgRef = useRef(null)
   const [revealed, setRevealed] = useState(false)
 
   // Reveal on scroll (mesmo padrão das outras seções)
@@ -51,42 +48,6 @@ function Sobre() {
     return () => obs.disconnect()
   }, [])
 
-  // Parallax sutil do retrato — só translateY na imagem, integrado por rAF.
-  // Honra prefers-reduced-motion. A imagem tem folga vertical (top:-32px,
-  // height +64px), então o deslocamento nunca revela borda.
-  useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches
-    if (prefersReduced) return undefined
-    const sec = sectionRef.current
-    const img = portraitImgRef.current
-    if (!sec || !img) return undefined
-
-    let raf = 0
-    const update = () => {
-      raf = 0
-      const rect = sec.getBoundingClientRect()
-      const vh = window.innerHeight || document.documentElement.clientHeight
-      // progresso 0..1 enquanto a seção cruza a viewport
-      const progress = (vh - rect.top) / (vh + rect.height)
-      const clamped = Math.max(0, Math.min(1, progress))
-      const offset = (clamped - 0.5) * 2 * PARALLAX_MAX
-      img.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`
-    }
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll, { passive: true })
-    update()
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [])
-
   const reveal = (index, base = '') => ({
     className: [base, 'reveal', revealed ? 'is-visible' : '']
       .filter(Boolean)
@@ -97,21 +58,16 @@ function Sobre() {
   return (
     <section id="sobre" className="sobre" ref={sectionRef}>
       <div className="sobre__spread">
-        {/* Retrato full-bleed à esquerda + masthead sobre o scrim */}
+        {/* Arte institucional — grande, estática, ancorada à esquerda da tela,
+            com a base exatamente no topo da faixa escura. A imagem já traz
+            moldura dourada, flores e o nome; exibida inteira. */}
         <div className={'sobre__portrait' + (revealed ? ' is-visible' : '')}>
           <img
-            ref={portraitImgRef}
-            src="/silvia-fraga-cover.jpg"
-            alt="Silvia Fraga, advogada"
+            src="/sobre-profissional.jpg"
+            alt="Silvia Fraga — Advocacia & Consultoria Jurídica"
             className="sobre__portrait-img"
             loading="lazy"
           />
-          <span className="sobre__scrim" aria-hidden="true" />
-          <div className="sobre__masthead">
-            <span className="sobre__masthead-name">Silvia Fraga</span>
-            <span className="sobre__masthead-rule" aria-hidden="true" />
-            <span className="sobre__masthead-role">Advocacia · OAB/SP</span>
-          </div>
         </div>
 
         {/* Coluna de conteúdo */}
