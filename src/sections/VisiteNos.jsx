@@ -6,10 +6,10 @@ function VisiteNos() {
   return (
     <section id="visite-nos" className="section visite-nos">
       <div className="vn__deco vn__deco--left" aria-hidden="true">
-        <img src="/plantas/rose-3.png" alt="" />
+        <img src="/plantas/rose-3.png" alt="" loading="lazy" decoding="async" />
       </div>
       <div className="vn__deco vn__deco--right" aria-hidden="true">
-        <img src="/plantas/rose-4.png" alt="" />
+        <img src="/plantas/rose-4.png" alt="" loading="lazy" decoding="async" />
       </div>
       <div className="container">
         <header className="visite-nos__header">

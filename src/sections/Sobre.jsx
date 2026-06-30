@@ -101,7 +101,7 @@ function Sobre() {
             src="/flor-4-deco.svg"
             alt=""
             aria-hidden="true"
-            loading="eager"
+            loading="lazy"
             decoding="async"
             className={
               'sobre__deco sobre__deco--tl' + (revealed ? ' is-visible' : '')
@@ -111,7 +111,7 @@ function Sobre() {
             src="/flor-1-deco.svg"
             alt=""
             aria-hidden="true"
-            loading="eager"
+            loading="lazy"
             decoding="async"
             className={
               'sobre__deco sobre__deco--br' + (revealed ? ' is-visible' : '')

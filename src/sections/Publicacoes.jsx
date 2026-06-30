@@ -27,7 +27,7 @@ function Publicacoes() {
   return (
     <section id="publicacoes" className="section publicacoes">
       <div className="pub__deco pub__deco--vazo" aria-hidden="true">
-        <img src="/plantas/planta-contato.png" alt="" />
+        <img src="/plantas/planta-contato.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className="container">
         <header className="publicacoes__header">

@@ -196,7 +196,7 @@ function HeroFlower() {
              permanece com a magnólia animada (abaixo). */
           <div className="hero__lockup">
             <img
-              src="/logo-hero-branca.png"
+              src="/logo-hero-branca.webp"
               alt="Silvia Fraga — Advocacia e Consultoria Jurídica"
               className="hero__lockup-logo"
               loading="eager"
@@ -209,7 +209,7 @@ function HeroFlower() {
         ) : (
           <>
             <motion.img
-              src="/plantas/flor-branca.png"
+              src="/plantas/flor-branca.webp"
               alt=""
               className="hero__art-img"
               aria-hidden="true"

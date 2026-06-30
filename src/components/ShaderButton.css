@@ -34,8 +34,19 @@
   border-radius: inherit;
   overflow: hidden;
   pointer-events: none; /* garante que canvas WebGL nunca absorva clique */
-  /* Container do canvas WebGL */
+  /* Container do canvas WebGL. O gradiente CSS abaixo e o FALLBACK estatico
+     (mobile / prefers-reduced-motion / fora da viewport): aproxima o MeshGradient
+     com radiais sobrepostos. No desktop visivel, o canvas WebGL pinta por cima. */
+  background:
+    radial-gradient(115% 130% at 16% 18%, var(--sb-c2) 0%, transparent 55%),
+    radial-gradient(120% 120% at 84% 82%, var(--sb-c3) 0%, transparent 58%),
+    radial-gradient(140% 130% at 76% 10%, var(--sb-c1) 0%, transparent 62%),
+    var(--sb-c4);
 }
+/* Paletas dos fallbacks (espelham PALETTES em ShaderButton.jsx) */
+.shader-btn--primary { --sb-c1: #5d0809; --sb-c2: #b52b58; --sb-c3: #cc3366; --sb-c4: #210304; }
+.shader-btn--gold    { --sb-c1: #5d0809; --sb-c2: #fcd17d; --sb-c3: #e4e0b4; --sb-c4: #210304; }
+.shader-btn--dark    { --sb-c1: #000000; --sb-c2: #210304; --sb-c3: #5d0809; --sb-c4: #3a0405; }
 .shader-btn__shader > * {
   width: 100% !important;
   height: 100% !important;
@@ -170,8 +181,5 @@
   background: rgba(228, 224, 180, 0.2);
 }
 
-/* === Reduce motion: kill shader animation === */
-@media (prefers-reduced-motion: reduce) {
-  .shader-btn__shader { opacity: 0; }
-  .shader-btn { background: linear-gradient(135deg, var(--color-text-primary), var(--color-action-hover)); }
-}
+/* === Reduce motion: sem WebGL, o fallback CSS (em .shader-btn__shader) ja cobre.
+   Nao escondemos o shader aqui — o gradiente estatico e justamente o visual. === */

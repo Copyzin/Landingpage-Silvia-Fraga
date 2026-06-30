@@ -62,8 +62,8 @@ export const CONTATO = {
       mapsSearch: `https://www.google.com/maps/search/?api=1&query=${enc(ENDERECO_CAMPINAS)}`,
       mapsDirections: `https://www.google.com/maps/dir/?api=1&destination=${enc(ENDERECO_CAMPINAS)}`,
       fachadas: [
-        '/sede-campinas-fachada.jpg',
-        '/sede-campinas-interior.png',
+        '/sede-campinas-fachada.webp',
+        '/sede-campinas-interior.webp',
       ],
     },
     {
@@ -73,8 +73,8 @@ export const CONTATO = {
       mapsSearch: `https://www.google.com/maps/search/?api=1&query=${enc(ENDERECO_SAO_PAULO)}`,
       mapsDirections: `https://www.google.com/maps/dir/?api=1&destination=${enc(ENDERECO_SAO_PAULO)}`,
       fachadas: [
-        '/sede-sp-fachada.jpg',
-        '/sede-sp-interior.png',
+        '/sede-sp-fachada.webp',
+        '/sede-sp-interior.webp',
       ],
     },
   ],

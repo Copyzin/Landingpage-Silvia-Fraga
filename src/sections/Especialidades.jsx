@@ -7,7 +7,7 @@ function Especialidades() {
   return (
     <section id="especialidades" className="section especialidades">
       <div className="esp__deco esp__deco--right" aria-hidden="true">
-        <img src="/plantas/vazo-planta.png" alt="" />
+        <img src="/plantas/vazo-planta.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className="container">
         <header className="especialidades__header">

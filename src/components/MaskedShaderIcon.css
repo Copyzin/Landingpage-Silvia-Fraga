@@ -29,7 +29,10 @@
   pointer-events: none;
 }
 
-/* Camada visível com o shader, recortada pela silhueta do ícone */
+/* Camada visível com o shader, recortada pela silhueta do ícone.
+   O gradiente CSS abaixo e o FALLBACK estatico (mobile / reduced-motion):
+   no desktop o canvas WebGL pinta por cima; sem ele, o icone aparece preenchido
+   pelo gradiente da paleta. */
 .masked-shader-icon__shader {
   display: block;
   width: 100%;
@@ -41,7 +44,14 @@
   -webkit-mask-position: center;
           mask-position: center;
   transition: opacity 200ms var(--ease-premium);
+  background:
+    radial-gradient(120% 130% at 18% 16%, var(--sb-c2) 0%, transparent 58%),
+    radial-gradient(120% 120% at 82% 84%, var(--sb-c3) 0%, transparent 60%),
+    var(--sb-c1, #5d0809);
 }
+.masked-shader-icon--primary { --sb-c1: #5d0809; --sb-c2: #b52b58; --sb-c3: #cc3366; }
+.masked-shader-icon--gold    { --sb-c1: #5d0809; --sb-c2: #fcd17d; --sb-c3: #e4e0b4; }
+.masked-shader-icon--dark    { --sb-c1: #210304; --sb-c2: #5d0809; --sb-c3: #3a0405; }
 
 @media (prefers-reduced-motion: reduce) {
   .masked-shader-icon,

@@ -1,6 +1,7 @@
 import { memo, useRef } from 'react'
-import { MeshGradient } from '@paper-design/shaders-react'
 import { ArrowUpRight } from '@phosphor-icons/react'
+import LazyMeshGradient from './LazyMeshGradient'
+import useShaderActivation from '../hooks/useShaderActivation'
 import './ShaderButton.css'
 
 const PALETTES = {
@@ -54,6 +55,9 @@ function ShaderButtonImpl({
   // Seed estável por instância: gerado uma vez no mount, persiste entre re-renders.
   // Aceita override via prop pra casos onde o consumidor quer controlar.
   const seedRef = useRef(seed ?? Math.floor(Math.random() * 10000))
+  // Performance: WebGL só no desktop; mobile/reduced-motion usam o gradiente CSS
+  // de fallback (ver ShaderButton.css). Fora da viewport, speed=0 congela o rAF.
+  const { ref: shaderRef, mountWebgl, inView } = useShaderActivation()
   const isExternal =
     external ?? (typeof href === 'string' && /^https?:/.test(href))
   const targetProps = isExternal
@@ -100,18 +104,20 @@ function ShaderButtonImpl({
       aria-label={ariaLabel || (iconOnly ? undefined : undefined)}
       {...targetProps}
     >
-      <span className="shader-btn__shader" aria-hidden="true">
-        <MeshGradient
-          colors={palette}
-          speed={SHADER_PRESET.speed}
-          distortion={SHADER_PRESET.distortion}
-          swirl={SHADER_PRESET.swirl}
-          offsetX={SHADER_PRESET.offsetX}
-          offsetY={SHADER_PRESET.offsetY}
-          scale={SHADER_PRESET.scale}
-          frame={seedRef.current}
-          style={{ width: '100%', height: '100%' }}
-        />
+      <span className="shader-btn__shader" ref={shaderRef} aria-hidden="true">
+        {mountWebgl && (
+          <LazyMeshGradient
+            colors={palette}
+            speed={inView ? SHADER_PRESET.speed : 0}
+            distortion={SHADER_PRESET.distortion}
+            swirl={SHADER_PRESET.swirl}
+            offsetX={SHADER_PRESET.offsetX}
+            offsetY={SHADER_PRESET.offsetY}
+            scale={SHADER_PRESET.scale}
+            frame={seedRef.current}
+            style={{ width: '100%', height: '100%' }}
+          />
+        )}
       </span>
       <span className="shader-btn__overlay" aria-hidden="true" />
       {!iconOnly && (

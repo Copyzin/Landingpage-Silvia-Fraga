@@ -8,10 +8,10 @@ function Contato() {
     <section id="contato" className="contato">
       <div className="contato__ambient" aria-hidden="true" />
       <div className="contato__flor" aria-hidden="true">
-        <img src="/plantas/flor-branca.png" alt="" />
+        <img src="/plantas/flor-branca.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className="contato__planta-direita" aria-hidden="true">
-        <img src="/plantas/close-up-plant-leaves.png" alt="" />
+        <img src="/plantas/close-up-plant-leaves.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className="container contato__inner">
         <header className="contato__header">

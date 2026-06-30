@@ -2,27 +2,67 @@
 <html lang="pt-BR">
   <head>
 
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WNGCM9HH');</script>
-<!-- End Google Tag Manager -->
-    
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18180202143"></script>
+<!-- Google Tag Manager + Google Ads (gtag) — carregamento DIFERIDO.
+     Os scripts externos (~280KB, ~290ms de eval na main thread) so baixam apos a
+     primeira interacao do usuario ou no idle pos-load, liberando a main thread no
+     carregamento inicial. O stub gtag/dataLayer fica disponivel ja, entao
+     'config'/'event' disparados cedo (ex: conversoes) sao enfileirados e
+     processados quando os tags carregam. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'AW-18180202143');
+
+  (function () {
+    var loaded = false;
+    function loadTags() {
+      if (loaded) return;
+      loaded = true;
+      // Google Tag Manager
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-WNGCM9HH');
+      // Google Ads (gtag.js)
+      var g = document.createElement('script');
+      g.async = true;
+      g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18180202143';
+      document.head.appendChild(g);
+    }
+    var evts = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+    function onFirst() {
+      evts.forEach(function (e) { window.removeEventListener(e, onFirst); });
+      loadTags();
+    }
+    evts.forEach(function (e) { window.addEventListener(e, onFirst, { passive: true }); });
+    // Fallback sem interacao: carrega no idle apos o load
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if ('requestIdleCallback' in window) requestIdleCallback(loadTags, { timeout: 4000 });
+        else setTimeout(loadTags, 2500);
+      }, 1500);
+    });
+  })();
 </script>
-    
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- Preload da imagem de LCP do Hero no MOBILE (lockup com a logo, 128KB).
+         Sem isto, numa SPA React a imagem so e descoberta depois do bundle JS
+         executar. Media-scoped a mobile; no desktop o Hero usa outra imagem
+         (a magnolia, ~1.2MB) que NAO precaregamos — preload de imagem pesada
+         compete com o JS critico e nao ajuda o LCP (que e gated pela execucao
+         do JS no CSR). Ver flor-branca: deixa carregar no fluxo normal. -->
+    <link rel="preload" as="image" href="/logo-hero-branca.webp" fetchpriority="high" media="(max-width: 768px)" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#5d0809" />
     <meta name="description" content="Silvia Fraga Advocacia e Consultoria Jurídica. Direito tributário, sucessório, empresarial rural. Sedes em Campinas e São Paulo." />

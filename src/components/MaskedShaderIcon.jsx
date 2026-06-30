@@ -1,6 +1,7 @@
 import { memo, useCallback, useState } from 'react'
-import { MeshGradient } from '@paper-design/shaders-react'
 import { SHADER_PRESET, SHADER_PALETTES } from './ShaderButton'
+import LazyMeshGradient from './LazyMeshGradient'
+import useShaderActivation from '../hooks/useShaderActivation'
 import './MaskedShaderIcon.css'
 
 // Seed única compartilhada por todos os MaskedShaderIcons da página: ambos os
@@ -24,6 +25,9 @@ function MaskedShaderIconImpl({
 }) {
   const Tag = as
   const palette = SHADER_PALETTES[variant] || SHADER_PALETTES.primary
+  // Performance: WebGL só no desktop; mobile/reduced-motion usam o gradiente CSS
+  // de fallback recortado pela máscara do ícone. Fora da viewport, speed=0.
+  const { ref: shaderRef, mountWebgl, inView } = useShaderActivation()
   const isExternal =
     external ?? (typeof href === 'string' && /^https?:/.test(href))
   const targetProps = isExternal
@@ -61,7 +65,7 @@ function MaskedShaderIconImpl({
 
   return (
     <Tag
-      className={`masked-shader-icon ${className}`.trim()}
+      className={`masked-shader-icon masked-shader-icon--${variant} ${className}`.trim()}
       href={href}
       to={to}
       onClick={handleClick}
@@ -80,6 +84,7 @@ function MaskedShaderIconImpl({
 
       {/* Camada visível: shader recortado pela forma do ícone */}
       <span
+        ref={shaderRef}
         className="masked-shader-icon__shader"
         style={{
           WebkitMaskImage: maskUrl || 'none',
@@ -88,17 +93,19 @@ function MaskedShaderIconImpl({
         }}
         aria-hidden="true"
       >
-        <MeshGradient
-          colors={palette}
-          frame={SHARED_SEED}
-          speed={SHADER_PRESET.speed}
-          distortion={SHADER_PRESET.distortion}
-          swirl={SHADER_PRESET.swirl}
-          offsetX={SHADER_PRESET.offsetX}
-          offsetY={SHADER_PRESET.offsetY}
-          scale={SHADER_PRESET.scale}
-          style={{ width: '100%', height: '100%' }}
-        />
+        {mountWebgl && (
+          <LazyMeshGradient
+            colors={palette}
+            frame={SHARED_SEED}
+            speed={inView ? SHADER_PRESET.speed : 0}
+            distortion={SHADER_PRESET.distortion}
+            swirl={SHADER_PRESET.swirl}
+            offsetX={SHADER_PRESET.offsetX}
+            offsetY={SHADER_PRESET.offsetY}
+            scale={SHADER_PRESET.scale}
+            style={{ width: '100%', height: '100%' }}
+          />
+        )}
       </span>
     </Tag>
   )

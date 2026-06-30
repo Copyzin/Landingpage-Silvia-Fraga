@@ -333,6 +333,12 @@
     white-space: normal;
     align-items: flex-start;
   }
+  /* Mobile: centraliza o CTA e o afasta da faixa de credibilidade (.sobre__band)
+     logo abaixo, que tem margin-top:0 e encostava no botao. */
+  .sobre__cta {
+    align-self: center;
+    margin-bottom: clamp(36px, 9vw, 56px);
+  }
 }
 
 @media (max-width: 640px) {
