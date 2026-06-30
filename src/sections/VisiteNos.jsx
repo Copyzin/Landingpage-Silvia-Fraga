@@ -13,7 +13,7 @@ function VisiteNos() {
       </div>
       <div className="container">
         <header className="visite-nos__header">
-          <span className="eyebrow">04 — Visite-nos</span>
+          <span className="eyebrow">Visite-nos</span>
           <h2 className="visite-nos__title">
             Duas sedes prontas para <em>receber você</em>.
           </h2>

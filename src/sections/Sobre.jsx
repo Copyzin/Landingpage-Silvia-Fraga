@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useReducedMotion,
+} from 'motion/react'
 import { ChatCircleText, ArrowUpRight } from '@phosphor-icons/react'
 import ShaderButton from '../components/ShaderButton'
 import { CONTATO } from '../constants/contact'
@@ -23,6 +30,27 @@ const STATS = [
 function Sobre() {
   const sectionRef = useRef(null)
   const [revealed, setRevealed] = useState(false)
+  // Acentos florais (SVG) so em telas largas: evita download e poluicao
+  // visual no layout empilhado do mobile/tablet.
+  const [wide, setWide] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(min-width: 961px)').matches
+  )
+
+  // Parallax interno ao frame, dirigido por scroll (estilo Sólia, sem hover).
+  // A imagem e maior que a moldura e desliza verticalmente; amplitude calibrada
+  // para retrato (head-safe): nunca corta a cabeca no topo.
+  const portraitRef = useRef(null)
+  const reduce = useReducedMotion()
+  const { scrollYProgress } = useScroll({
+    target: portraitRef,
+    // 0 = topo do card toca a base do viewport; 1 = base do card sai pelo topo
+    offset: ['start end', 'end start'],
+  })
+  // +3% (entrada: cabeca com folga maxima) -> -3% (revela mais da base, cabeca segura)
+  const yRaw = useTransform(scrollYProgress, [0, 1], ['3%', '-3%'])
+  const y = useSpring(yRaw, { stiffness: 120, damping: 30, mass: 0.4 })
 
   // Reveal on scroll (mesmo padrão das outras seções)
   useEffect(() => {
@@ -48,6 +76,14 @@ function Sobre() {
     return () => obs.disconnect()
   }, [])
 
+  // Renderiza os acentos florais apenas em telas largas
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 961px)')
+    const onChange = () => setWide(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
   const reveal = (index, base = '') => ({
     className: [base, 'reveal', revealed ? 'is-visible' : '']
       .filter(Boolean)
@@ -57,38 +93,77 @@ function Sobre() {
 
   return (
     <section id="sobre" className="sobre" ref={sectionRef}>
-      <div className="sobre__spread">
-        {/* Arte institucional — grande, estática, ancorada à esquerda da tela,
-            com a base exatamente no topo da faixa escura. A imagem já traz
-            moldura dourada, flores e o nome; exibida inteira. */}
-        <div className={'sobre__portrait' + (revealed ? ' is-visible' : '')}>
+      {/* Acentos botanicos nas laterais (assinatura discreta). Entrada
+          escalonada "crescendo da base" via clip-path, atrelada ao reveal. */}
+      {wide && (
+        <>
           <img
-            src="/sobre-profissional.jpg"
-            alt="Silvia Fraga — Advocacia & Consultoria Jurídica"
-            className="sobre__portrait-img"
-            loading="lazy"
+            src="/flor-4-deco.svg"
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+            decoding="async"
+            className={
+              'sobre__deco sobre__deco--tl' + (revealed ? ' is-visible' : '')
+            }
           />
+          <img
+            src="/flor-1-deco.svg"
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+            decoding="async"
+            className={
+              'sobre__deco sobre__deco--br' + (revealed ? ' is-visible' : '')
+            }
+          />
+        </>
+      )}
+
+      <div className="sobre__spread">
+        {/* Card da Dra. Silvia — espelho do Hero (moldura double-bezel + selo),
+            posicionado a esquerda. A foto preenche a moldura (cover) e tem um
+            parallax interno por scroll, head-safe (ver Sobre.css / hooks acima). */}
+        <div
+          ref={portraitRef}
+          className={'sobre__portrait' + (revealed ? ' is-visible' : '')}
+        >
+          <div className="bezel">
+            <div className="bezel__inner sobre__art-inner">
+              <motion.img
+                src="/silvia-foto-nova-bg.webp"
+                alt="Dra. Silvia Fraga"
+                className="sobre__art-img"
+                style={reduce ? undefined : { y }}
+                loading="lazy"
+              />
+              <div className="hero__seal" aria-hidden="true">
+                <span className="hero__seal-name">Silvia Fraga</span>
+                <span className="hero__seal-divider" />
+                <span className="hero__seal-foot">OAB/SP</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Coluna de conteúdo */}
         <div className="sobre__content">
-          <span {...reveal(0, 'eyebrow')}>01 — A profissional</span>
+          <span {...reveal(0, 'eyebrow')}>A profissional</span>
 
           <h2 {...reveal(1, 'sobre__title')}>
             Técnica, proximidade e <em>dedicação ao seu caso</em>.
           </h2>
 
           <p {...reveal(2, 'sobre__lead')}>
-            O escritório Sílvia Fraga Advocacia soma mais de 10 anos de
-            atuação. À frente dele, a Dra. Sílvia Fraga conduz pessoalmente
-            cada caso, com especialidade em tributário no agro, defesa em
-            execução fiscal e planejamento sucessório.
+            A Dra. Sílvia é fundadora e responsável técnica pelo escritório,
+            é especialista em direito tributário no agro, sucessões e direito
+            empresarial, com pós-graduação em direito no agronegócio.
           </p>
 
           <p {...reveal(3, 'sobre__lead')}>
-            Uma equipe parceira, capacitada e dedicada, cuida das suas
-            questões jurídicas com competência e agilidade: atendimento
-            personalizado e sempre próximo de você.
+            Está sempre em constante busca por atualizações e aprofundamento
+            técnico, possuindo uma visão estratégica e alinhada às necessidades
+            dos clientes.
           </p>
 
           <div {...reveal(4, 'sobre__foco')}>

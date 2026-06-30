@@ -5,32 +5,145 @@ import {
   InstagramLogo,
   X as XIcon,
   DotsThree,
+  CaretDown,
 } from '@phosphor-icons/react'
 import { CONTATO } from '../constants/contact'
+import { ESPECIALIDADES } from '../data/especialidades'
 import ShaderButton from './ShaderButton'
 import MaskedShaderIcon from './MaskedShaderIcon'
 import './Header.css'
 
 const NAV_LINKS = [
-  { label: 'A profissional', anchor: '#sobre' },
-  { label: 'Especialidades', anchor: '#especialidades' },
+  { label: 'Sobre', anchor: '#quem-somos' },
+  { label: 'Especialidades', anchor: '#especialidades', articles: true },
   { label: 'Publicações', anchor: '#publicacoes' },
-  { label: 'Visite-nos', anchor: '#visite-nos' },
+  { label: 'Sedes', anchor: '#visite-nos' },
   { label: 'Contato', anchor: '#contato' },
 ]
 
+// Rotas de artigo (paginas de especialidade) — fonte unica: data/especialidades.
+// Novas especialidades entram automaticamente no dropdown e no acordeao.
+const ARTICLES = ESPECIALIDADES.map((e) => ({
+  label: e.titulo,
+  ordem: e.ordem,
+  to: `/especialidades/${e.slug}`,
+}))
+
 const HIDE_AT = 120 // px scroll antes de começar a esconder
 const SCROLL_DELTA = 6 // px mínimo entre amostras pra evitar jitter
+const OPEN_DELAY = 120 // ms — exige dwell; flick de passagem NAO abre
+const CLOSE_DELAY = 220 // ms — tolerancia ao sair; re-entrada cancela
+
+// Dropdown de nav (desktop) — adaptacao React do Dropdown Patterns.md:
+// painel e filho do grupo (hover tolerante), bridge transparente no CSS,
+// delays de dwell, foco abre na hora e Esc fecha. Card vidro-claro coeso
+// com a island-nav. So aparece no desktop (a nav some < 1024px).
+function NavDropdown({ label, href, articles }) {
+  const [open, setOpen] = useState(false)
+  const openT = useRef(null)
+  const closeT = useRef(null)
+  const groupRef = useRef(null)
+  const triggerRef = useRef(null)
+
+  useEffect(
+    () => () => {
+      clearTimeout(openT.current)
+      clearTimeout(closeT.current)
+    },
+    []
+  )
+
+  const onEnter = () => {
+    clearTimeout(closeT.current) // re-entrada rapida cancela o fechamento
+    if (open) return
+    clearTimeout(openT.current)
+    openT.current = setTimeout(() => setOpen(true), OPEN_DELAY)
+  }
+  const onLeave = () => {
+    clearTimeout(openT.current) // cancela abertura pendente (flick)
+    closeT.current = setTimeout(() => setOpen(false), CLOSE_DELAY)
+  }
+  const onFocus = () => {
+    clearTimeout(closeT.current)
+    setOpen(true) // teclado: foco abre na hora, sem dwell
+  }
+  const onBlur = (e) => {
+    if (!groupRef.current?.contains(e.relatedTarget)) {
+      clearTimeout(closeT.current)
+      closeT.current = setTimeout(() => setOpen(false), CLOSE_DELAY)
+    }
+  }
+  const onKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      clearTimeout(openT.current)
+      clearTimeout(closeT.current)
+      setOpen(false)
+      triggerRef.current?.focus()
+    }
+  }
+  const hide = () => {
+    clearTimeout(openT.current)
+    clearTimeout(closeT.current)
+    setOpen(false)
+  }
+
+  return (
+    <span
+      ref={groupRef}
+      className={`nav-group ${open ? 'is-open' : ''}`}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onKeyDown={onKeyDown}
+    >
+      <a
+        ref={triggerRef}
+        href={href}
+        className="island-nav__link nav-group__trigger"
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
+        {label}
+        <span className="nav-caret" aria-hidden="true" />
+      </a>
+
+      <div className="nav-dropdown" role="menu">
+        <div className="nav-dropdown__inner">
+          <p className="nav-dropdown__eyebrow">Áreas de atuação</p>
+          <div className="nav-dropdown__grid">
+            {articles.map((a) => (
+              <Link
+                key={a.to}
+                to={a.to}
+                className="nav-dropdown__item"
+                role="menuitem"
+                onClick={hide}
+              >
+                <span className="nav-dropdown__index">{a.ordem}</span>
+                <span className="nav-dropdown__label">{a.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </span>
+  )
+}
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [espOpen, setEspOpen] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
   const location = useLocation()
   const isHome = location.pathname === '/'
   const lastYRef = useRef(0)
   const tickingRef = useRef(false)
 
-  const closeMenu = useCallback(() => setMenuOpen(false), [])
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false)
+    setEspOpen(false)
+  }, [])
 
   // Fecha menu ao navegar
   useEffect(() => {
@@ -99,17 +212,26 @@ function Header() {
             <span className="island-nav__wordmark">Silvia Fraga</span>
           </Link>
 
-          {/* Centro: links âncora (desktop) */}
+          {/* Centro: links âncora (desktop) — "Especialidades" vira dropdown */}
           <nav className="island-nav__links" aria-label="Navegação principal">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.anchor}
-                href={navHref(link.anchor)}
-                className="island-nav__link"
-              >
-                {link.label}
-              </a>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.articles ? (
+                <NavDropdown
+                  key={link.anchor}
+                  label={link.label}
+                  href={navHref(link.anchor)}
+                  articles={ARTICLES}
+                />
+              ) : (
+                <a
+                  key={link.anchor}
+                  href={navHref(link.anchor)}
+                  className="island-nav__link"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
           </nav>
 
           {/* Direita: ações de contato — ícones recortados do mesmo campo shader (única seed) */}
@@ -184,25 +306,93 @@ function Header() {
         </button>
 
         <nav className="mobile-menu__nav" aria-label="Navegação mobile">
-          {NAV_LINKS.map((link, idx) => (
-            <a
-              key={link.anchor}
-              href={navHref(link.anchor)}
-              className="mobile-menu__link"
-              style={{ '--reveal-delay': `${100 + idx * 80}ms` }}
-              onClick={closeMenu}
-            >
-              <span className="mobile-menu__link-index">
-                {String(idx + 1).padStart(2, '0')}
-              </span>
-              <span className="mobile-menu__link-label">{link.label}</span>
-            </a>
-          ))}
+          {NAV_LINKS.map((link, idx) => {
+            const delay = { '--reveal-delay': `${100 + idx * 80}ms` }
+            const index = String(idx + 1).padStart(2, '0')
+
+            if (link.articles) {
+              // Acordeao: label navega para a secao; caret expande os artigos
+              return (
+                <div
+                  key={link.anchor}
+                  className="mobile-menu__item mobile-menu__group"
+                  style={delay}
+                >
+                  <div className="mobile-menu__row">
+                    <a
+                      href={navHref(link.anchor)}
+                      className="mobile-menu__link mobile-menu__link--group"
+                      onClick={closeMenu}
+                    >
+                      <span className="mobile-menu__link-index">{index}</span>
+                      <span className="mobile-menu__link-label">
+                        {link.label}
+                      </span>
+                    </a>
+                    <button
+                      type="button"
+                      className={`mobile-menu__toggle ${
+                        espOpen ? 'is-open' : ''
+                      }`}
+                      aria-expanded={espOpen}
+                      aria-controls="mobile-articles"
+                      aria-label={
+                        espOpen
+                          ? 'Recolher áreas de atuação'
+                          : 'Expandir áreas de atuação'
+                      }
+                      onClick={() => setEspOpen((v) => !v)}
+                    >
+                      <CaretDown size={20} weight="bold" />
+                    </button>
+                  </div>
+
+                  <div
+                    id="mobile-articles"
+                    className={`mobile-menu__sublist ${
+                      espOpen ? 'is-open' : ''
+                    }`}
+                  >
+                    <div className="mobile-menu__sublist-inner">
+                      {ARTICLES.map((a) => (
+                        <Link
+                          key={a.to}
+                          to={a.to}
+                          className="mobile-menu__sublink"
+                          onClick={closeMenu}
+                        >
+                          <span className="mobile-menu__sublink-index">
+                            {a.ordem}
+                          </span>
+                          <span className="mobile-menu__sublink-label">
+                            {a.label}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+
+            return (
+              <a
+                key={link.anchor}
+                href={navHref(link.anchor)}
+                className="mobile-menu__item mobile-menu__link"
+                style={delay}
+                onClick={closeMenu}
+              >
+                <span className="mobile-menu__link-index">{index}</span>
+                <span className="mobile-menu__link-label">{link.label}</span>
+              </a>
+            )
+          })}
         </nav>
 
         <div
           className="mobile-menu__actions"
-          style={{ '--reveal-delay': '420ms' }}
+          style={{ '--reveal-delay': '520ms' }}
         >
           <ShaderButton
             href={CONTATO.whatsappMessageUrl}

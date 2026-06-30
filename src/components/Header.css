@@ -83,6 +83,126 @@
   color: var(--color-action-hover);
 }
 
+/* === Nav dropdown (desktop) — adaptado do Dropdown Patterns.md ===
+   Painel filho do grupo (hover tolerante) + bridge transparente. Card vidro
+   claro coeso com a island-nav. So existe no desktop (a nav some < 1024px). */
+.nav-group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-group__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.nav-group.is-open .nav-group__trigger {
+  background: var(--color-surface-wash);
+  color: var(--color-action-hover);
+}
+/* Caret = span proprio (nunca ::after) — gira ao abrir */
+.nav-caret {
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  opacity: 0.6;
+  transition: transform 240ms var(--ease-premium);
+}
+.nav-group.is-open .nav-caret {
+  transform: translateY(1px) rotate(225deg);
+}
+
+/* Painel: invisivel e deslocado 8px; bridge padding-top mata o dead-zone */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  padding-top: 16px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 220ms var(--ease-premium),
+    transform 220ms var(--ease-premium),
+    visibility 0s linear 220ms;
+  z-index: 80;
+}
+.nav-group.is-open .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+  transition:
+    opacity 220ms var(--ease-premium),
+    transform 220ms var(--ease-premium),
+    visibility 0s;
+}
+.nav-dropdown__inner {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+  padding: 14px;
+}
+.nav-dropdown__eyebrow {
+  font-family: var(--font-archivo);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  opacity: 0.5;
+  margin: 4px 10px 12px;
+}
+/* Coluna unica: rotulos juridicos longos ficam legiveis e sem colisao */
+.nav-dropdown__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 268px;
+}
+.nav-dropdown__item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--duration-base) var(--ease-premium);
+}
+.nav-dropdown__item:hover,
+.nav-dropdown__item:focus-visible {
+  background: var(--color-surface-wash);
+  outline: none;
+}
+.nav-dropdown__index {
+  font-family: var(--font-archivo);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  min-width: 22px;
+}
+.nav-dropdown__label {
+  font-family: var(--font-cinzel);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  transition: color var(--duration-base) var(--ease-premium);
+}
+.nav-dropdown__item:hover .nav-dropdown__label,
+.nav-dropdown__item:focus-visible .nav-dropdown__label {
+  color: var(--color-action-hover);
+}
+
 /* === Right actions === */
 .island-nav__actions {
   display: inline-flex;
@@ -238,8 +358,10 @@
   -webkit-backdrop-filter: blur(24px) saturate(140%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: clamp(80px, 10vh, 120px) clamp(24px, 6vw, 64px);
+  justify-content: flex-start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: clamp(92px, 13vh, 132px) clamp(24px, 6vw, 64px) clamp(40px, 8vh, 72px);
   visibility: hidden;
   opacity: 0;
   transition:
@@ -290,15 +412,97 @@
   line-height: 1;
   border-bottom: 1px solid rgba(228, 224, 180, 0.1);
   transition: color var(--duration-base) var(--ease-premium);
-  /* Reveal animation */
+}
+/* Reveal escalonado aplicado ao ITEM (link simples OU grupo de acordeao) */
+.mobile-menu__item {
   opacity: 0;
   transform: translateY(20px);
   filter: blur(8px);
 }
-.mobile-menu.is-open .mobile-menu__link {
+.mobile-menu.is-open .mobile-menu__item {
   animation: revealLink 700ms var(--ease-premium) var(--reveal-delay, 100ms) forwards;
 }
 .mobile-menu__link:hover { color: var(--color-surface-muted); }
+
+/* === Acordeao de artigos (mobile) === */
+.mobile-menu__group {
+  display: flex;
+  flex-direction: column;
+}
+.mobile-menu__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(228, 224, 180, 0.1);
+}
+.mobile-menu__link--group {
+  flex: 1;
+  border-bottom: none;
+}
+.mobile-menu__toggle {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  color: var(--color-text-inverse);
+  background: rgba(228, 224, 180, 0.06);
+  border: 1px solid rgba(228, 224, 180, 0.2);
+  border-radius: 50%;
+  transition: background var(--duration-base) var(--ease-premium);
+}
+.mobile-menu__toggle:hover { background: rgba(228, 224, 180, 0.16); }
+.mobile-menu__toggle svg {
+  transition: transform var(--duration-base) var(--ease-premium);
+}
+.mobile-menu__toggle.is-open svg { transform: rotate(180deg); }
+
+/* Sublista: animacao de altura via grid-template-rows 0fr -> 1fr */
+.mobile-menu__sublist {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-base) var(--ease-premium);
+}
+.mobile-menu__sublist.is-open { grid-template-rows: 1fr; }
+.mobile-menu__sublist-inner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* tira os sublinks do foco/AT quando recolhido (some so apos a animacao) */
+  visibility: hidden;
+  transition: visibility 0s linear var(--duration-base);
+}
+.mobile-menu__sublist.is-open .mobile-menu__sublist-inner {
+  visibility: visible;
+  transition: visibility 0s;
+}
+.mobile-menu__sublink {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 13px 0 13px 30px;
+  font-family: var(--font-archivo);
+  font-size: clamp(15px, 4.4vw, 19px);
+  color: rgba(251, 246, 231, 0.82);
+  border-bottom: 1px solid rgba(228, 224, 180, 0.06);
+  transition:
+    color var(--duration-base) var(--ease-premium),
+    padding-left var(--duration-base) var(--ease-premium);
+}
+.mobile-menu__sublink:hover {
+  color: var(--color-surface-muted);
+  padding-left: 36px;
+}
+.mobile-menu__sublink-index {
+  font-family: var(--font-archivo);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--color-surface-muted);
+  opacity: 0.6;
+  min-width: 26px;
+}
 .mobile-menu__link-index {
   font-family: var(--font-archivo);
   font-size: 11px;

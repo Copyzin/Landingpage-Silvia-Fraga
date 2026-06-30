@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Hero from '../sections/Hero'
+import QuemSomos from '../sections/QuemSomos'
 import Sobre from '../sections/Sobre'
 import Especialidades from '../sections/Especialidades'
 import Publicacoes from '../sections/Publicacoes'
@@ -37,6 +38,7 @@ function Home() {
   return (
     <div className={'home-root' + (enter ? ' home-root--enter' : '')}>
       <Hero />
+      <QuemSomos />
       <Sobre />
       <Especialidades />
       <Publicacoes />

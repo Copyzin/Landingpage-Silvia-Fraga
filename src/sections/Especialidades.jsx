@@ -11,14 +11,14 @@ function Especialidades() {
       </div>
       <div className="container">
         <header className="especialidades__header">
-          <span className="eyebrow">02 — Áreas de atuação</span>
+          <span className="eyebrow">Áreas de atuação</span>
           <h2 className="especialidades__title">
-            Cinco frentes, uma <em>defesa estratégica</em>.
+            Diversas frentes, uma <em>defesa estratégica</em>.
           </h2>
           <p className="especialidades__lead">
-            Atuamos onde a complexidade jurídica encontra a operação real:
-            do produtor rural à família patrimonial, da execução fiscal
-            urgente à sucessão de longo prazo.
+            Atuamos onde a complexidade jurídica encontra a vida real:
+            do agronegócio ao direito de família, do contrato bem escrito
+            à regularização do seu imóvel.
           </p>
         </header>
 

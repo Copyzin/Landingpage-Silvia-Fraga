@@ -15,7 +15,7 @@ function Contato() {
       </div>
       <div className="container contato__inner">
         <header className="contato__header">
-          <span className="eyebrow eyebrow--dark">05 — Fale com a Silvia</span>
+          <span className="eyebrow eyebrow--dark">Fale com a Silvia</span>
           <h2 className="contato__title">
             Pronta para defender o <em>que importa</em>.
           </h2>

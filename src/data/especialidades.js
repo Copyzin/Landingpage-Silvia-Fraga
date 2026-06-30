@@ -227,6 +227,93 @@ export const ESPECIALIDADES = [
       },
     ],
   },
+  {
+    slug: 'direito-civil',
+    ordem: 'VI',
+    titulo: 'Direito Civil',
+    subtitulo:
+      'Contratos bem escritos e relações civis seguras, da redação à análise de risco.',
+    resumo:
+      'Elaboração e análise de contratos, com revisão de cláusulas, riscos e garantias antes da assinatura.',
+    destaque: false,
+    whatsappContext: 'Direito Civil',
+    conteudo: [
+      {
+        type: 'p',
+        text: 'O direito civil organiza as relações do dia a dia: o que cada parte promete, o que recebe em troca e o que acontece quando algo sai do combinado. Boa parte dos conflitos que chegam ao Judiciário nasce de um documento mal escrito ou de uma assinatura dada sem leitura técnica.',
+      },
+      {
+        type: 'h2',
+        text: 'O que fazemos nesta área',
+      },
+      {
+        type: 'p',
+        text: 'Elaboramos contratos sob medida e analisamos contratos recebidos antes da assinatura. Em ambos os casos, o trabalho é o mesmo na essência: transformar a intenção das partes em cláusulas claras, antecipar os cenários de risco e definir, desde já, como eventuais conflitos serão resolvidos.',
+      },
+      {
+        type: 'quote',
+        text: 'Um bom contrato não é o que prevê o melhor cenário: é o que protege você no pior deles.',
+      },
+    ],
+  },
+  {
+    slug: 'direito-imobiliario',
+    ordem: 'VII',
+    titulo: 'Direito Imobiliário',
+    subtitulo:
+      'Compra, venda e regularização de imóveis com título limpo e segurança jurídica.',
+    resumo:
+      'Contrato de compra e venda, regularização imobiliária, adjudicação compulsória e usucapião.',
+    destaque: false,
+    whatsappContext: 'Direito Imobiliário',
+    conteudo: [
+      {
+        type: 'p',
+        text: 'Imóvel é, para a maioria das pessoas, o bem mais valioso do patrimônio. Comprar, vender ou regularizar uma propriedade exige ler a matrícula com cuidado, conhecer os ônus que recaem sobre o bem e formalizar cada etapa, da proposta ao registro, sem deixar pontas soltas.',
+      },
+      {
+        type: 'h2',
+        text: 'O que fazemos nesta área',
+      },
+      {
+        type: 'p',
+        text: 'Atuamos na compra e venda de imóveis, na regularização de propriedades com documentação incompleta, na adjudicação compulsória contra quem se recusa a outorgar a escritura e na usucapião, que transforma a posse longa e pacífica em propriedade registrada. Cada frente tem o mesmo objetivo: um título seguro e oponível a terceiros.',
+      },
+      {
+        type: 'quote',
+        text: 'Propriedade segura começa na leitura da matrícula e termina no registro, não no aperto de mão.',
+      },
+    ],
+  },
+  {
+    slug: 'direito-de-familia',
+    ordem: 'VIII',
+    titulo: 'Direito de Família',
+    subtitulo:
+      'Decisões de família conduzidas com técnica, discrição e respeito ao seu momento.',
+    resumo:
+      'Divórcio e a organização patrimonial e pessoal que o acompanha, na via consensual ou litigiosa.',
+    destaque: false,
+    whatsappContext: 'Direito de Família',
+    conteudo: [
+      {
+        type: 'p',
+        text: 'Questões de família misturam direito e vida. Por isso, conduzimos cada caso com técnica e discrição, buscando primeiro o entendimento e, quando ele não é possível, a proteção firme dos seus interesses e dos interesses de quem depende de você.',
+      },
+      {
+        type: 'h2',
+        text: 'O que fazemos nesta área',
+      },
+      {
+        type: 'p',
+        text: 'Cuidamos do divórcio e de tudo o que vem com ele: a partilha dos bens, a definição sobre guarda e convivência dos filhos e os alimentos. Sempre que há consenso, buscamos a via mais rápida e menos desgastante; quando há litígio, atuamos para que a decisão seja justa e estável.',
+      },
+      {
+        type: 'quote',
+        text: 'O melhor desfecho de uma separação é aquele que as partes ainda consideram justo anos depois.',
+      },
+    ],
+  },
 ]
 
 export const findEspecialidade = (slug) =>

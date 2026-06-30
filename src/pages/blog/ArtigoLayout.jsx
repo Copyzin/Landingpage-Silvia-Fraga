@@ -1,67 +1,66 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ChatCircleText } from '@phosphor-icons/react'
-import { findEspecialidade, ESPECIALIDADES } from '../../data/especialidades'
-import { artigosDaCategoria } from '../../data/artigos'
+import { findArtigo, artigosDaCategoria } from '../../data/artigos'
+import { findEspecialidade } from '../../data/especialidades'
 import { CONTATO } from '../../constants/contact'
 import ShaderButton from '../../components/ShaderButton'
-import './EspecialidadeLayout.css'
+// Reaproveita o layout/estilo da pagina de especialidade (CSS global)
+import '../especialidades/EspecialidadeLayout.css'
 
 const LEAVE_MS = 340
 
-function EspecialidadeLayout() {
-  const { slug } = useParams()
+function ArtigoLayout() {
+  const { artigo } = useParams()
   const navigate = useNavigate()
-  const esp = findEspecialidade(slug)
+  const art = findArtigo(artigo)
   const [leaving, setLeaving] = useState(false)
 
   // Scroll to top on mount/slug change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [slug])
+  }, [artigo])
 
-  if (!esp) return <Navigate to="/" replace />
+  if (!art) return <Navigate to="/" replace />
+
+  const cat = findEspecialidade(art.categoria)
+  const categoriaTitulo = cat ? cat.titulo : 'Especialidades'
 
   const handleBack = (e) => {
     e.preventDefault()
     if (leaving) return
     setLeaving(true)
     window.setTimeout(() => {
-      navigate('/', { state: { fromEsp: true } })
+      navigate(`/especialidades/${art.categoria}`)
     }, LEAVE_MS)
   }
 
-  // Outras especialidades (para sugestão de leitura)
-  const outras = ESPECIALIDADES.filter((e) => e.slug !== esp.slug).slice(0, 3)
-
-  // Artigos do blog desta categoria (especialidade)
-  const artigos = artigosDaCategoria(esp.slug)
+  // Outros artigos da mesma categoria (sugestao de leitura)
+  const outros = artigosDaCategoria(art.categoria).filter(
+    (a) => a.slug !== art.slug
+  )
 
   return (
     <article className={'esp-page' + (leaving ? ' is-leaving' : '')}>
       <header className="esp-page__hero">
         <div className="container esp-page__hero-inner">
           <a
-            href="/"
+            href={`/especialidades/${art.categoria}`}
             className="esp-page__back"
             onClick={handleBack}
-            aria-label="Voltar para o início do site"
+            aria-label={`Voltar para ${categoriaTitulo}`}
           >
             <ArrowLeft size={14} weight="light" />
-            <span>Voltar para Início</span>
+            <span>Voltar para {categoriaTitulo}</span>
           </a>
 
-          <div className="esp-page__title-row">
-            <span
-              className="esp-page__ordem"
-              aria-label={`Artigo ${esp.ordem}`}
-            >
-              {esp.ordem}
-            </span>
-            <h1 className="esp-page__title">{esp.titulo}</h1>
-          </div>
+          <span className="eyebrow esp-page__artigo-eyebrow">
+            Blog · {categoriaTitulo}
+          </span>
 
-          <p className="esp-page__subtitle">{esp.subtitulo}</p>
+          <h1 className="esp-page__title">{art.titulo}</h1>
+
+          <p className="esp-page__subtitle">{art.subtitulo}</p>
         </div>
       </header>
 
@@ -69,7 +68,7 @@ function EspecialidadeLayout() {
 
       <div className="container esp-page__body-wrap">
         <div className="esp-page__body">
-          {esp.conteudo.map((bloco, idx) => {
+          {art.conteudo.map((bloco, idx) => {
             if (bloco.type === 'h2') {
               return <h2 key={idx}>{bloco.text}</h2>
             }
@@ -89,67 +88,66 @@ function EspecialidadeLayout() {
           <div className="bezel__inner esp-page__cta-inner">
             <span className="eyebrow esp-page__cta-eyebrow">Próximo passo</span>
             <h3 className="esp-page__cta-title">
-              Pronta para te orientar sobre {esp.titulo}.
+              Pronta para te orientar sobre {art.titulo}.
             </h3>
             <p className="esp-page__cta-lead">
               Conte o seu caso e receba um retorno direto, com avaliação prática e próximos passos.
             </p>
             <ShaderButton
-              href={CONTATO.whatsappMessageWithContext(esp.whatsappContext)}
+              href={CONTATO.whatsappMessageWithContext(art.whatsappContext)}
               variant="primary"
               size="lg"
               icon={ChatCircleText}
-              sublabel={`Sobre: ${esp.titulo}`}
+              sublabel={`Sobre: ${art.titulo}`}
             >
               Fale com a Silvia
             </ShaderButton>
           </div>
         </aside>
 
-        {/* Blog — artigos vinculados a esta categoria */}
-        {artigos.length > 0 && (
-          <section className="esp-page__outras esp-page__artigos">
+        {/* Sugestao: outros artigos da mesma categoria */}
+        {outros.length > 0 ? (
+          <section className="esp-page__outras">
             <h3 className="esp-page__outras-title">
-              Blog — Artigos sobre {esp.titulo}
+              Mais sobre {categoriaTitulo}
             </h3>
             <div className="esp-page__outras-grid">
-              {artigos.map((a, i) => (
+              {outros.map((o, i) => (
                 <Link
-                  key={a.slug}
-                  to={`/especialidades/${esp.slug}/${a.slug}`}
+                  key={o.slug}
+                  to={`/especialidades/${art.categoria}/${o.slug}`}
                   className="esp-page__outras-link"
                 >
                   <span className="esp-page__outras-ordem">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span className="esp-page__outras-nome">{a.titulo}</span>
+                  <span className="esp-page__outras-nome">{o.titulo}</span>
                   <span className="esp-page__outras-arrow">→</span>
                 </Link>
               ))}
             </div>
           </section>
-        )}
-
-        {/* Sugestão de outras leituras */}
-        <section className="esp-page__outras">
-          <h3 className="esp-page__outras-title">Continue lendo</h3>
-          <div className="esp-page__outras-grid">
-            {outras.map((o) => (
+        ) : (
+          <section className="esp-page__outras">
+            <div className="esp-page__outras-grid">
               <Link
-                key={o.slug}
-                to={`/especialidades/${o.slug}`}
+                to={`/especialidades/${art.categoria}`}
                 className="esp-page__outras-link"
               >
-                <span className="esp-page__outras-ordem">{o.ordem}</span>
-                <span className="esp-page__outras-nome">{o.titulo}</span>
+                <span className="esp-page__outras-ordem" aria-hidden="true">
+                  ←
+                </span>
+                <span className="esp-page__outras-nome">
+                  Voltar para {categoriaTitulo}
+                </span>
                 <span className="esp-page__outras-arrow">→</span>
               </Link>
-            ))}
-          </div>
-        </section>
+            </div>
+          </section>
+        )}
       </div>
     </article>
   )
 }
 
-export default EspecialidadeLayout
+export default ArtigoLayout

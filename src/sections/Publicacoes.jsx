@@ -31,7 +31,7 @@ function Publicacoes() {
       </div>
       <div className="container">
         <header className="publicacoes__header">
-          <span className="eyebrow">03 — Publicações</span>
+          <span className="eyebrow">Publicações</span>
           <h2 className="publicacoes__title">
             <em>Análises</em> e pareceres.
           </h2>

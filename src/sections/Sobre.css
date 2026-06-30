@@ -1,8 +1,4 @@
 .sobre {
-  /* Largura da arte sobreposta + recuo do conteúdo/faixa que a contornam.
-     Ambos partem do mesmo x → texto e números alinhados à direita da arte. */
-  --portrait-w: clamp(360px, 42vw, 560px);
-  --content-inset: calc(var(--portrait-w) + clamp(24px, 3vw, 64px));
   position: relative;
   /* Fundo em continuidade com a arte (tons amostrados da própria imagem):
      a "bola" quente do canto inferior-direito vaza para a seção, a luz vem
@@ -32,36 +28,129 @@
   overflow: clip;
 }
 
-/* ===== Conteúdo à direita; a faixa esquerda fica reservada para a arte ===== */
-.sobre__spread {
-  position: relative; /* contexto da arte absoluta (base = topo da faixa) */
-  display: flex;
-  align-items: flex-start;
-  min-height: clamp(420px, 52vh, 580px);
-  padding-left: var(--content-inset);
+/* ===== Acentos florais (assinatura botanica nas laterais, so desktop) =====
+   Conteudo (spread + faixa) acima das flores; flores sobre o bege, abaixo
+   do conteudo. Entrada escalonada "crescendo da base" via clip-path. */
+.sobre__spread,
+.sobre__band {
+  position: relative;
+  z-index: 1;
 }
 
-/* === Arte institucional — grande, ancorada à esquerda, com a base exatamente
-   no topo da faixa escura (bottom: 0 do spread). O fundo creme da arte casa
-   com a seção. O movimento (float + parallax de scroll + cursor) é escrito
-   pelo integrador rAF em Sobre.jsx, travado para nunca descer da base. === */
-.sobre__portrait {
+.sobre__deco {
   position: absolute;
-  left: 0;
-  top: clamp(20px, 3vw, 44px); /* alinha ao topo do padding-top do conteúdo */
-  z-index: 2;
-  width: var(--portrait-w);
+  z-index: 0;
+  width: auto;
   pointer-events: none;
+  mix-blend-mode: multiply; /* funde com o bege, sem halo de recorte */
+  filter: saturate(0.88) sepia(0.08); /* dessatura p/ terroso (paleta) */
+  opacity: 0;
+  /* "Cresce da base": scale a partir de transform-origin bottom + fade, escalonado.
+     transform/opacity animam de forma confiavel (clip-path nao interpola aqui). */
+  transition:
+    opacity 900ms var(--ease-premium),
+    transform 1100ms var(--ease-premium);
+  will-change: opacity, transform;
+}
+.sobre__deco.is-visible {
+  opacity: 0.52;
+}
+
+/* Topo-esquerda (flor-4) — entra primeiro */
+.sobre__deco--tl {
+  left: -4px;
+  top: 28px;
+  height: 248px;
+  transform-origin: bottom center;
+  transform: rotate(-6deg) translateY(10px) scale(0.7);
+  transition-delay: 120ms;
+}
+.sobre__deco--tl.is-visible {
+  transform: rotate(-6deg) translateY(0) scale(1);
+}
+
+/* Base-direita (flor-1) — entra em seguida (escalonado) */
+.sobre__deco--br {
+  right: -14px;
+  bottom: 174px;
+  height: 232px; /* ~7% menor: iguala o peso visual com a flor superior-esquerda */
+  transform-origin: bottom center;
+  transform: rotate(7deg) translateY(10px) scale(0.7);
+  transition-delay: 360ms;
+}
+.sobre__deco--br.is-visible {
+  transform: rotate(7deg) translateY(0) scale(1);
+}
+
+@media (max-width: 960px) {
+  .sobre__deco {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sobre__deco {
+    transition: none;
+    opacity: 0.52;
+    clip-path: none;
+  }
+  .sobre__deco--tl {
+    transform: rotate(-6deg);
+  }
+  .sobre__deco--br {
+    transform: rotate(7deg);
+  }
+}
+
+/* ===== Grid espelhado do Hero: card da foto a esquerda, conteudo a direita ===== */
+.sobre__spread {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr; /* espelho do Hero (1.15 / 0.85) */
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* === Card da foto — espelho de .hero__portrait. A moldura (.bezel /
+   .bezel__inner) e o selo (.hero__seal) sao reaproveitados do Hero. === */
+.sobre__portrait {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
   opacity: 0;
   transition: opacity 800ms var(--ease-premium);
 }
 .sobre__portrait.is-visible {
   opacity: 1;
 }
-.sobre__portrait-img {
-  display: block;
+
+/* bezel__inner ja da position:relative + overflow:hidden + raio concentrico */
+.sobre__art-inner {
+  aspect-ratio: 4 / 5;
+}
+
+/* Foto preenche a moldura (cover) e desliza no parallax interno (Sobre.jsx).
+   Folga (top/height) > amplitude do translate (+-3% da altura da IMG, no JS):
+   sem fresta nas pontas e corte max no topo ~6.7% (< ~9% de folga do cabelo)
+   -> a cabeca nunca e cortada. Foco a esquerda via object-position-x. */
+.sobre__art-img {
+  position: absolute;
+  left: 0;
+  top: -4%;
   width: 100%;
-  height: auto;
+  height: 108%;
+  object-fit: cover;
+  object-position: 32% center;
+  /* O fundo de estudio e cinza/sem cor: aquece para bege, casando com a
+     paleta da secao. Sepia leva os cinzas para bege; saturacao/brilho sutis
+     mantem a pele natural. */
+  filter: sepia(0.4) saturate(1.18) brightness(1.02);
+  will-change: transform;
+  display: block;
 }
 
 /* === Coluna de conteúdo === */
@@ -72,8 +161,7 @@
   justify-content: center;
   gap: clamp(18px, 1.8vw, 24px);
   max-width: 620px;
-  padding: clamp(20px, 3vw, 44px) clamp(24px, 6vw, 120px)
-    clamp(20px, 3vw, 44px) 0;
+  padding: clamp(20px, 3vw, 44px) 0;
 }
 .sobre__content .eyebrow {
   align-self: flex-start;
@@ -165,7 +253,7 @@
 }
 
 .sobre__cta {
-  align-self: center;
+  align-self: flex-start;
   margin-top: clamp(4px, 1vw, 10px);
 }
 
@@ -220,37 +308,30 @@
 }
 
 /* ===== Responsive =====
-   Abaixo do desktop largo a sobreposição não cabe: a arte volta ao fluxo
-   como card contido no topo e tudo empilha. */
-@media (max-width: 1199px) {
+   Abaixo do desktop o grid lado a lado nao cabe: empilha o card no topo
+   (foto continua protagonista, nao acento minusculo) e o conteudo abaixo. */
+@media (max-width: 960px) {
   .sobre {
-    padding-top: 0;
-  }
-  .sobre__portrait {
-    position: static;
-    width: auto;
-    z-index: auto;
-    pointer-events: auto;
-    display: grid;
-    place-items: center;
-    padding: clamp(28px, 8vw, 48px) var(--container-padding) 0;
-  }
-  .sobre__portrait-img {
-    width: min(440px, 80vw);
-    filter: none;
+    padding-top: clamp(48px, 9vw, 80px);
   }
   .sobre__spread {
-    display: block;
-    padding-left: 0;
-    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 44px);
+    justify-items: center;
+  }
+  .sobre__portrait {
+    max-width: 400px;
   }
   .sobre__content {
-    max-width: none;
-    padding: clamp(28px, 7vw, 44px) var(--container-padding);
+    max-width: 620px;
+    padding: 0;
     gap: 18px;
   }
-  .sobre__band {
-    padding-left: 0;
+  /* No mobile a nota NAO pode ser nowrap: o min-content (~545px) forcaria a
+     coluna do grid a estourar o viewport e ser clipada por .sobre{overflow:clip}. */
+  .sobre__note {
+    white-space: normal;
+    align-items: flex-start;
   }
 }
 
@@ -275,5 +356,9 @@
   .sobre__chip,
   .sobre__chip svg {
     transition: none;
+  }
+  /* JS ja nao aplica o parallax (useReducedMotion); garante repouso head-safe */
+  .sobre__art-img {
+    transform: none;
   }
 }

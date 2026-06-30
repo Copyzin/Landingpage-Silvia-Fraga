@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import WhatsAppFloating from './components/WhatsAppFloating'
 import Home from './pages/Home'
 import EspecialidadeLayout from './pages/especialidades/EspecialidadeLayout'
+import ArtigoLayout from './pages/blog/ArtigoLayout'
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
           <Route
             path="/especialidades/:slug"
             element={<EspecialidadeLayout />}
+          />
+          <Route
+            path="/especialidades/:categoria/:artigo"
+            element={<ArtigoLayout />}
           />
           <Route path="*" element={<Home />} />
         </Routes>
